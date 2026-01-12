@@ -1,0 +1,472 @@
+digraph TmxObjectEntityFactoryClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): TMX object → Entity archetypes (FULL / monolithic view)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // NOTE: This file is intentionally the FULL view and can be large.
+  // Split, easier-to-read diagrams:
+  // - docs/uml/tmx_loader_dispatch_overview.dot
+  // - docs/uml/tmx_archetypes_combatants.dot
+  // - docs/uml/tmx_archetypes_puzzle_objects.dot
+  // - docs/uml/tmx_archetypes_gates_exits_walls.dot
+
+  // -------------------- Packages / clusters --------------------
+  subgraph cluster_world {
+    label="com.timonipumba.world";
+    color="#4F81BD";
+    style="rounded";
+
+    TiledMapLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>TiledMapLoader</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - engine : Engine<BR ALIGN="LEFT"/>
+          - spriteLoader : SpriteLoader
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + loadMap(mapPath : String) : TiledMap<BR ALIGN="LEFT"/>
+          - loadWallLayer(layer : TiledMapTileLayer) : void<BR ALIGN="LEFT"/>
+          - loadObjectLayer(layer : MapLayer) : void<BR ALIGN="LEFT"/>
+          - loadDoorsLayer(layer : MapLayer) : void<BR ALIGN="LEFT"/>
+          - createPlayer(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createEnemy(x : float, y : float, enemyType : String, arenaId : String) : void<BR ALIGN="LEFT"/>
+          - createItem(x : float, y : float, itemType : ItemType) : void<BR ALIGN="LEFT"/>
+          - createDoor(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createPuzzleDoor(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createGate(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createSocket(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createToken(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createExit(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+          - createTerminal(obj : MapObject, x : float, y : float) : void
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_archetypes {
+    label="ECS entity archetypes (conceptual)";
+    color="#999999";
+    style="rounded,dashed";
+
+    PlayerEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Player (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Movement + combat + render + inventory</TD></TR>
+      </TABLE>
+    >];
+
+    EnemyEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Enemy (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Stats-driven combat + render</TD></TR>
+      </TABLE>
+    >];
+
+    ItemEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Item (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">Pickup via ItemComponent</TD></TR>
+      </TABLE>
+    >];
+
+    TokenEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Token (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">In-world token marker (sprites optional)</TD></TR>
+      </TABLE>
+    >];
+
+    SocketEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Socket (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">SocketComponent + (puzzle node comps)</TD></TR>
+      </TABLE>
+    >];
+
+    DoorEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Door (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">DoorComponent (group/open)</TD></TR>
+      </TABLE>
+    >];
+
+    PuzzleDoorEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>PuzzleDoor (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">PuzzleDoorComponent (locks via Puzzle)</TD></TR>
+      </TABLE>
+    >];
+
+    GateEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Gate (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">GateComponent (+ optional GateDoorComponent)</TD></TR>
+      </TABLE>
+    >];
+
+    ExitEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Exit (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">ExitComponent (targetMap)</TD></TR>
+      </TABLE>
+    >];
+
+    TerminalEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Terminal (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">TerminalComponent (+ optional AlgebraTerminalComponent)</TD></TR>
+      </TABLE>
+    >];
+
+    WallEntity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Wall tile (Entity)</B></TD></TR>
+        <TR><TD ALIGN="LEFT">WallComponent (+ GateWallComponent for gate tiles)</TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_components {
+    label="com.timonipumba.components";
+    color="#8064A2";
+    style="rounded";
+
+    PositionComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR></TABLE>
+    >];
+    VelocityComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>VelocityComponent</B></TD></TR></TABLE>
+    >];
+    CollisionComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>CollisionComponent</B></TD></TR></TABLE>
+    >];
+    RenderableComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR></TABLE>
+    >];
+    SpriteComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>SpriteComponent</B></TD></TR></TABLE>
+    >];
+    AnimationComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>AnimationComponent</B></TD></TR></TABLE>
+    >];
+
+    PlayerComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PlayerComponent</B></TD></TR></TABLE>
+    >];
+    PlayerInventoryComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PlayerInventoryComponent</B></TD></TR></TABLE>
+    >];
+
+    HealthComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>HealthComponent</B></TD></TR></TABLE>
+    >];
+    CombatComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>CombatComponent</B></TD></TR></TABLE>
+    >];
+    HitFlashComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>HitFlashComponent</B></TD></TR></TABLE>
+    >];
+    CameraShakeComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>CameraShakeComponent</B></TD></TR></TABLE>
+    >];
+
+    EnemyComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>EnemyComponent</B></TD></TR></TABLE>
+    >];
+    EnemyStatsComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>EnemyStatsComponent</B></TD></TR></TABLE>
+    >];
+    RangedAttackWindupComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>RangedAttackWindupComponent</B></TD></TR></TABLE>
+    >];
+
+    ItemComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>ItemComponent</B></TD></TR></TABLE>
+    >];
+    ItemType [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>ItemType</B></TD></TR></TABLE>
+    >];
+
+    TokenComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>TokenComponent</B></TD></TR></TABLE>
+    >];
+
+    SocketComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>SocketComponent</B></TD></TR></TABLE>
+    >];
+    RegisterNodeComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>RegisterNodeComponent</B></TD></TR></TABLE>
+    >];
+    LightsOutNodeComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>LightsOutNodeComponent</B></TD></TR></TABLE>
+    >];
+
+    DoorComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>DoorComponent</B></TD></TR></TABLE>
+    >];
+    PuzzleDoorComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PuzzleDoorComponent</B></TD></TR></TABLE>
+    >];
+
+    ExitComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>ExitComponent</B></TD></TR></TABLE>
+    >];
+
+    GateComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>GateComponent</B></TD></TR></TABLE>
+    >];
+    GateDoorComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>GateDoorComponent</B></TD></TR></TABLE>
+    >];
+
+    WallComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>WallComponent</B></TD></TR></TABLE>
+    >];
+    GateWallComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>GateWallComponent</B></TD></TR></TABLE>
+    >];
+
+    TerminalComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>TerminalComponent</B></TD></TR></TABLE>
+    >];
+    AlgebraTerminalComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>AlgebraTerminalComponent</B></TD></TR></TABLE>
+    >];
+  }
+
+  subgraph cluster_assets {
+    label="com.timonipumba.assets";
+    color="#9BBB59";
+    style="rounded";
+
+    SpriteLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>SpriteLoader</B></TD></TR>
+        <TR><TD ALIGN="LEFT">(sprites for player/enemy/item/socket/terminal)</TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_level {
+    label="com.timonipumba.level";
+    color="#C0504D";
+    style="rounded";
+
+    PuzzleRegistry [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PuzzleRegistry</B></TD></TR></TABLE>
+    >];
+    Puzzle [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>Puzzle</B></TD></TR></TABLE>
+    >];
+    PortalConfig [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>PortalConfig</B></TD></TR></TABLE>
+    >];
+  }
+
+  subgraph cluster_systems {
+    label="com.timonipumba.systems";
+    color="#4BACC6";
+    style="rounded";
+
+    GateSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR></TABLE>
+    >];
+    RegisterAllocationSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR></TABLE>
+    >];
+    GraphLightsOutSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>GraphLightsOutSystem</B></TD></TR></TABLE>
+    >];
+  }
+
+  subgraph cluster_core {
+    label="com.timonipumba";
+    color="#7F7F7F";
+    style="rounded";
+
+    GameConstants [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;constants&gt;&gt;</B><BR/><B>GameConstants</B></TD></TR></TABLE>
+    >];
+  }
+
+  // -------------------- External types --------------------
+  subgraph cluster_external {
+    label="External (LibGDX / Ashley)";
+    color="#999999";
+    style="rounded,dashed";
+
+    Engine [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Engine</B></TD></TR></TABLE>
+    >];
+    Entity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Entity</B></TD></TR></TABLE>
+    >];
+    MapObject [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>MapObject</B></TD></TR></TABLE>
+    >];
+    RectangleMapObject [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>RectangleMapObject</B></TD></TR></TABLE>
+    >];
+    TiledMapTileMapObject [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMapTileMapObject</B></TD></TR></TABLE>
+    >];
+    TiledMap [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMap</B></TD></TR></TABLE>
+    >];
+    TiledMapTileLayer [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMapTileLayer</B></TD></TR></TABLE>
+    >];
+    TextureRegion [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TextureRegion</B></TD></TR></TABLE>
+    >];
+    Color [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Color</B></TD></TR></TABLE>
+    >];
+  }
+
+  // -------------------- Relationships (UML-ish) --------------------
+  // Associations
+  TiledMapLoader -> Engine      [style="solid", arrowhead="vee", label="engine"];
+  TiledMapLoader -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+
+  // Dependencies
+  TiledMapLoader -> GameConstants [style="dashed", arrowhead="vee", label="tile sizes/defaults"];
+  TiledMapLoader -> MapObject     [style="dashed", arrowhead="vee", label="reads properties"];
+  TiledMapLoader -> RectangleMapObject [style="dashed", arrowhead="vee", label="rect bounds"];
+  TiledMapLoader -> TiledMapTileMapObject [style="dashed", arrowhead="vee", label="tile object sprites"];
+  TiledMapLoader -> TiledMapTileLayer [style="dashed", arrowhead="vee", label="walls/collision layer"];
+  TiledMapLoader -> TiledMap [style="dashed", arrowhead="vee", label="returns"];
+
+  // Loader dispatch: creates archetypes
+  TiledMapLoader -> PlayerEntity    [style="dashed", arrowhead="vee", label="creates (type=player)"];
+  TiledMapLoader -> EnemyEntity     [style="dashed", arrowhead="vee", label="creates (type=enemy)"];
+  TiledMapLoader -> ItemEntity      [style="dashed", arrowhead="vee", label="creates (type=potion; buff case needs review) "];
+  TiledMapLoader -> TokenEntity     [style="dashed", arrowhead="vee", label="creates (type=token)"];
+  TiledMapLoader -> SocketEntity    [style="dashed", arrowhead="vee", label="creates (type=socket)"];
+  TiledMapLoader -> DoorEntity      [style="dashed", arrowhead="vee", label="creates (type=door)"];
+  TiledMapLoader -> PuzzleDoorEntity [style="dashed", arrowhead="vee", label="creates (type=puzzledoor)"];
+  TiledMapLoader -> GateEntity      [style="dashed", arrowhead="vee", label="creates (type=gate)"];
+  TiledMapLoader -> ExitEntity      [style="dashed", arrowhead="vee", label="creates (type=exit)"];
+  TiledMapLoader -> TerminalEntity  [style="dashed", arrowhead="vee", label="helper exists (currently no dispatch call)"];
+  TiledMapLoader -> WallEntity      [style="dashed", arrowhead="vee", label="creates (tile walls)"];
+
+  // Archetype → components (composition)
+  PlayerEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> VelocityComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> PlayerComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> PlayerInventoryComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> HealthComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CombatComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> HitFlashComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CameraShakeComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+  PlayerEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  EnemyEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> VelocityComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> EnemyComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> EnemyStatsComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> HealthComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> CombatComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> HitFlashComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> RangedAttackWindupComponent [style="dashed", arrowhead="vee", label="if type=RANGER"];
+  EnemyEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+  EnemyEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  ItemEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ItemEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ItemEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ItemEntity -> ItemComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ItemEntity -> ItemType [style="dashed", arrowhead="vee", label="parameter"];
+  ItemEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+  ItemEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  TokenEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> TokenComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+  TokenEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  SocketEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> SocketComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> RegisterNodeComponent [style="dashed", arrowhead="vee", label="if puzzleType=RegisterAllocation"];
+  SocketEntity -> LightsOutNodeComponent [style="dashed", arrowhead="vee", label="if puzzleType=GraphLightsOut"];
+  SocketEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+  SocketEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  DoorEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> DoorComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+
+  PuzzleDoorEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> PuzzleDoorComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+
+  GateEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  GateEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  GateEntity -> WallComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="blocks"];
+  GateEntity -> GateComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  GateEntity -> GateDoorComponent [style="dashed", arrowhead="vee", label="optional (group) "];
+
+  ExitEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ExitEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ExitEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  ExitEntity -> ExitComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+
+  TerminalEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TerminalEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TerminalEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TerminalEntity -> TerminalComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TerminalEntity -> AlgebraTerminalComponent [style="dashed", arrowhead="vee", label="if terminalType=forge/oracle"];
+  TerminalEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  WallEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  WallEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  WallEntity -> WallComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  WallEntity -> GateWallComponent [style="dashed", arrowhead="vee", label="if tileId=GATE_TILE_ID"];
+
+  // Puzzle wiring (door pulls puzzle from registry/builds from MapObject)
+  TiledMapLoader -> PuzzleRegistry [style="dashed", arrowhead="vee", label="get/register"];
+  TiledMapLoader -> Puzzle         [style="dashed", arrowhead="vee", label="constructs from props"];
+  PuzzleDoorComponent -> Puzzle    [style="solid", arrowhead="vee", label="puzzle"];
+
+  // Loader decisions influenced by configs / systems
+  TiledMapLoader -> PortalConfig [style="dashed", arrowhead="vee", label="hide legacy exits"];
+  TiledMapLoader -> GateSystem [style="dashed", arrowhead="vee", label="register arena bounds"];
+  TiledMapLoader -> RegisterAllocationSystem [style="dashed", arrowhead="vee", label="PUZZLE_TYPE constant"];
+  TiledMapLoader -> GraphLightsOutSystem     [style="dashed", arrowhead="vee", label="PUZZLE_TYPE constant"];
+
+  // Sprites + visuals
+  TiledMapLoader -> TextureRegion [style="dashed", arrowhead="vee", label="tile/sprite regions"];
+  TiledMapLoader -> Color         [style="dashed", arrowhead="vee", label="marker colors"];
+
+  // Archetypes are ultimately Engine entities
+  PlayerEntity -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  EnemyEntity  -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  ItemEntity   -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  TokenEntity  -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  SocketEntity -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  DoorEntity   -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  PuzzleDoorEntity -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  GateEntity   -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  ExitEntity   -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  TerminalEntity -> Entity [style="dashed", arrowhead="vee", label="instance"];
+  WallEntity   -> Entity [style="dashed", arrowhead="vee", label="instance"];
+}

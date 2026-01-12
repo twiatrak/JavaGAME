@@ -1,0 +1,47 @@
+# Gradle
+.gradle/
+build/
+out/
+bin/
+
+# Local Python virtualenv
+.venv/
+
+# VS Code workspace settings
+.vscode/
+
+# IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# LibGDX
+desktop/saves/
+desktop/generated/
+desktop/maps/
+
+# Some launch configurations generate under desktop/desktop/
+desktop/desktop/saves/
+desktop/desktop/generated/
+desktop/desktop/maps/
+
+# Logs
+*.log
+
+# Tooling output
+.VSCodeCounter/
+
+# ML AI Training Data and Weights
+training_data.csv
+ml_weights.dat
+metrics*.csv

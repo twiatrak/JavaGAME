@@ -1,0 +1,94 @@
+digraph ComponentsSpatialRendering {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.components — spatial & rendering primitives"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Base interface
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Component</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  PositionComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ x : float<br align="left"/>+ y : float</TD></TR>
+    </TABLE>
+  >];
+
+  VelocityComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>VelocityComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ x : float<br align="left"/>+ y : float</TD></TR>
+    </TABLE>
+  >];
+
+  CollisionComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CollisionComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ width : float<br align="left"/>+ height : float</TD></TR>
+    </TABLE>
+  >];
+
+  RenderableComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ width : float<br align="left"/>+ height : float<br align="left"/>+ color : Color</TD></TR>
+    </TABLE>
+  >];
+
+  SpriteComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>SpriteComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ region : TextureRegion<br align="left"/>+ renderOrder : int<br align="left"/>+ scaleX, scaleY : float<br align="left"/>+ rotation : float</TD></TR>
+    </TABLE>
+  >];
+
+  AnimationComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AnimationComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ currentState : State<br align="left"/>+ stateTime : float<br align="left"/>+ bobOffsetY : float<br align="left"/>+ squashScaleX, squashScaleY : float</TD></TR>
+    </TABLE>
+  >];
+
+  WallComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>WallComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;marker&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  // External libGDX types
+  Color [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Color</B></TD></TR>
+    </TABLE>
+  >];
+  TextureRegion [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TextureRegion</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance: components implement Ashley Component
+  PositionComponent -> Component [arrowhead="empty", style="solid"];
+  VelocityComponent -> Component [arrowhead="empty", style="solid"];
+  CollisionComponent -> Component [arrowhead="empty", style="solid"];
+  RenderableComponent -> Component [arrowhead="empty", style="solid"];
+  SpriteComponent -> Component [arrowhead="empty", style="solid"];
+  AnimationComponent -> Component [arrowhead="empty", style="solid"];
+  WallComponent -> Component [arrowhead="empty", style="solid"];
+
+  // Associations (fields)
+  RenderableComponent -> Color [label="color", arrowhead="vee", style="solid"];
+  SpriteComponent -> TextureRegion [label="region", arrowhead="vee", style="solid"];
+}

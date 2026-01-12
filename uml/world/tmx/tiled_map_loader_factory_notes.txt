@@ -1,0 +1,117 @@
+TMX → ECS entity factory notes (TiledMapLoader)
+=================================================
+
+Scope
+-----
+This document summarizes how `com.timonipumba.world.TiledMapLoader` turns TMX data into Ashley ECS Entities.
+It’s meant as a readable companion to the split UML DOT diagrams in docs/uml/.
+
+High-level responsibilities
+--------------------------
+1) loadMap(mapPath)
+   - Loads a TMX `TiledMap` and iterates its layers.
+
+2) loadWallLayer(TiledMapTileLayer)
+   - For each non-null tile cell, creates a "wall tile" entity:
+     - PositionComponent(x*tileWidth, y*tileHeight)
+     - CollisionComponent(tileWidth, tileHeight)
+     - WallComponent
+     - If tileId == GameConstants.GATE_TILE_ID: also GateWallComponent
+
+3) loadObjectLayer(MapLayer)
+   - For each MapObject, extracts geometry from:
+     - RectangleMapObject (rectangle bounds)
+     - TiledMapTileMapObject (tile placement; y adjusted by TILE_SIZE)
+   - Reads MapObject.properties["type"] (String) and dispatches by switch(type.toLowerCase()).
+
+Object dispatch (MapObject.properties["type"])
+----------------------------------------------
+player
+  -> createPlayer(object, x, y)
+
+enemy
+  -> createEnemy(x, y, enemy_type, arenaId)
+     - Reads MapObject.properties["enemy_type"]
+
+potion
+  -> createItem(x, y, ItemType.POTION)
+
+buff
+  -> There is a `case "buff":` in the switch, but the current code in that region looks incomplete/corrupted.
+     Treat this as "needs review" before documenting expected behavior.
+
+switch
+  -> No-op placeholder (currently just `break`).
+
+door
+  -> createDoor(object, x, y)
+     - Reads properties:
+       - group (String; defaults to GameConstants.DEFAULT_PUZZLE_GROUP)
+       - open (Boolean)
+     - Creates entity with Position/Collision/Renderable + DoorComponent
+
+puzzledoor
+  -> createPuzzleDoor(object, x, y)
+     - Reads properties:
+       - id (String; generated if missing)
+       - locked (Boolean; default locked)
+       - puzzleId (String; used to lookup/register Puzzle in PuzzleRegistry)
+       - isFinale (Boolean)
+       - hidden (Boolean; if true: collision set 0 and render alpha 0)
+     - Puzzle construction fallback (when puzzleId exists but registry has no puzzle):
+       - buildPuzzleFromMapObject(object, puzzleId)
+         - puzzleType (String; default from DEFAULT_PUZZLE_TYPE)
+         - answer (required)
+         - ciphertext / key / hint / prompt (optional)
+
+exit
+  -> createExit(object, x, y)
+     - Reads properties:
+       - targetMap (String)
+       - hidden (Boolean)
+     - Also affected by PortalConfig.WALL_SEGMENT_PORTALS_ENABLED + PortalConfig.HIDE_LEGACY_EXITS
+
+gate
+  -> createGate(object, x, y)
+     - Reads properties:
+       - sourceArenaId / targetArenaId
+       - traversalSymbol
+       - group (optional; if present: gate also behaves like a riddle-controlled barrier)
+       - open (Boolean)
+       - tileId (int; defaults to GameConstants.GATE_TILE_ID)
+     - Gate entity always includes WallComponent (collision blocker) + GateComponent
+     - If group is set: adds GateDoorComponent(group) and opens/closes instantly based on `open`
+
+token
+  -> createToken(object, x, y)
+     - Reads properties:
+       - tokenId (String) OR id (String); generated if missing
+     - Special-case: tokenId starting with "glyph_" uses colored marker instead of sprites.
+     - Otherwise uses either tile sprite (if TiledMapTileMapObject) or SpriteLoader fallback.
+
+socket
+  -> createSocket(object, x, y)
+     - Reads properties:
+       - requiresTokenId, group, consume, activated
+       - momentary, durationSeconds
+       - puzzleType, nodeId, neighbors
+       - winTrigger, unlockDoorGroup
+       - on (used by GraphLightsOut)
+     - Adds puzzle-specific node components based on puzzleType:
+       - RegisterAllocationSystem.PUZZLE_TYPE -> RegisterNodeComponent
+       - GraphLightsOutSystem.PUZZLE_TYPE -> LightsOutNodeComponent
+     - winTrigger sockets are hidden implementation details (collision 0, render alpha 0).
+
+Terminal support
+----------------
+There is a `createTerminal(object, x, y)` method implemented (terminalType=forge/oracle/puzzle, hidden terminals, etc.),
+but currently there are no call sites from the object-type dispatch switch.
+So: consider it "available but not wired" unless another layer/loader path calls it in future.
+
+Related UML diagrams
+--------------------
+- docs/uml/tmx_loader_dispatch_overview.dot
+- docs/uml/tmx_archetypes_combatants.dot
+- docs/uml/tmx_archetypes_puzzle_objects.dot
+- docs/uml/tmx_archetypes_gates_exits_walls.dot
+- docs/uml/tmx_object_entity_factory_class_diagram.dot  (full / monolithic view)

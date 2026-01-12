@@ -1,0 +1,123 @@
+digraph LevelPortalSpawning {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.level — portal spawning (wall-segment portals)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // External types
+  Engine [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Engine</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  PortalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PortalSystem</B></TD></TR>
+    </TABLE>
+  >];
+  ComponentMapper [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ComponentMapper&lt;T&gt;</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  Entity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Entity</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  Color [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Color</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  // Components used by PortalSpawner (declared elsewhere)
+  WallComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>WallComponent</B></TD></TR>
+    </TABLE>
+  >];
+  PositionComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR>
+    </TABLE>
+  >];
+  CollisionComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>CollisionComponent</B></TD></TR>
+    </TABLE>
+  >];
+  RenderableComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR>
+    </TABLE>
+  >];
+  PortalComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PortalComponent</B></TD></TR>
+    </TABLE>
+  >];
+
+  PortalConfig [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalConfig</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;static config&gt;&gt;<br align="left"/>+ WALL_SEGMENT_PORTALS_ENABLED : boolean<br align="left"/>+ MIN_SEGMENT_LENGTH : int<br align="left"/>+ MAX_SEGMENT_LENGTH : int<br align="left"/>+ PREFERRED_SEGMENT_LENGTH : int</TD></TR>
+    </TABLE>
+  >];
+
+  WallDirection [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>PortalConfig.WallDirection</B></TD></TR>
+      <TR><TD ALIGN="LEFT">NORTH<br align="left"/>EAST<br align="left"/>SOUTH<br align="left"/>WEST</TD></TR>
+    </TABLE>
+  >];
+
+  PortalSpawner [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalSpawner</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- engine : Engine<br align="left"/>- portalSystem : PortalSystem<br align="left"/>- wallMapper : ComponentMapper&lt;WallComponent&gt;<br align="left"/>- positionMapper : ComponentMapper&lt;PositionComponent&gt;<br align="left"/>- collisionMapper : ComponentMapper&lt;CollisionComponent&gt;<br align="left"/>- renderableMapper : ComponentMapper&lt;RenderableComponent&gt;<br align="left"/>- portalMapper : ComponentMapper&lt;PortalComponent&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  WallRun [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalSpawner.WallRun</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ entities : List&lt;Entity&gt;<br align="left"/>+ startX, startY : int<br align="left"/>+ length : int<br align="left"/>+ isHorizontal : boolean<br align="left"/>+ score : int</TD></TR>
+    </TABLE>
+  >];
+
+  WallGrid [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalSpawner.WallGrid</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- grid : Map&lt;Long,Entity&gt;<br align="left"/>- minX,maxX,minY,maxY : int</TD></TR>
+    </TABLE>
+  >];
+
+  // Associations
+  PortalSpawner -> Engine [label="engine", arrowhead="vee", style="solid"];
+  PortalSpawner -> PortalSystem [label="portalSystem", arrowhead="vee", style="solid"];
+  PortalSpawner -> ComponentMapper [label="mappers", arrowhead="vee", style="solid"];
+  WallGrid -> Entity [label="grid values", arrowhead="vee", style="solid"];
+  WallRun -> Entity [label="entities", arrowhead="vee", style="solid"];
+
+  // Nested relationship (conceptual)
+  PortalConfig -> WallDirection [style="dashed", arrowhead="vee", label="declares"];
+  PortalSpawner -> WallGrid [style="dashed", arrowhead="vee", label="builds/uses"];
+  PortalSpawner -> WallRun [style="dashed", arrowhead="vee", label="selects"];
+
+  // Dependencies
+  PortalSpawner -> PortalConfig [style="dashed", arrowhead="vee", label="feature flag & constants"];
+  PortalSpawner -> PortalComponent [style="dashed", arrowhead="vee", label="adds/activates"];
+  PortalSpawner -> RenderableComponent [style="dashed", arrowhead="vee", label="mutates color"];
+  PortalSpawner -> Color [style="dashed", arrowhead="vee", label="new Color(...)"];
+}

@@ -1,0 +1,236 @@
+digraph WorldTmxIoClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.world TMX I/O (loader + writer/helpers)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // -------------------- Packages (clusters) --------------------
+  subgraph cluster_world {
+    label="com.timonipumba.world";
+    color="#4F81BD";
+    style="rounded";
+
+    TiledMapLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>TiledMapLoader</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - engine : Engine<BR ALIGN="LEFT"/>
+          - spriteLoader : SpriteLoader
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + TiledMapLoader(engine : Engine)<BR ALIGN="LEFT"/>
+          + TiledMapLoader(engine : Engine, spriteLoader : SpriteLoader)<BR ALIGN="LEFT"/>
+          + setSpriteLoader(spriteLoader : SpriteLoader) : void<BR ALIGN="LEFT"/>
+          + loadMap(mapPath : String) : TiledMap
+        </TD></TR>
+      </TABLE>
+    >];
+
+    TmxMapWriter [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;package-private&gt;&gt;</B><BR/><B>TmxMapWriter</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - sb : StringBuilder<BR ALIGN="LEFT"/>
+          - width : int<BR ALIGN="LEFT"/>
+          - height : int<BR ALIGN="LEFT"/>
+          - tileSize : int<BR ALIGN="LEFT"/>
+          - tiledVersion : String<BR ALIGN="LEFT"/>
+          - nextLayerId : Integer<BR ALIGN="LEFT"/>
+          - nextObjectId : Integer
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + create(width : int, height : int) : TmxMapWriter {static}<BR ALIGN="LEFT"/>
+          + create(width : int, height : int, tiledVersion : String) : TmxMapWriter {static}<BR ALIGN="LEFT"/>
+          + withNextIds(nextLayerId : int, nextObjectId : int) : TmxMapWriter<BR ALIGN="LEFT"/>
+          + startMap() : TmxMapWriter<BR ALIGN="LEFT"/>
+          + tileset(source : String) : TmxMapWriter<BR ALIGN="LEFT"/>
+          + layerCsv(id : int, name : String, tiles : int[][]) : TmxMapWriter<BR ALIGN="LEFT"/>
+          + objectGroupOpen(id : int, name : String) : TmxMapWriter<BR ALIGN="LEFT"/>
+          + objectGroupClose() : TmxMapWriter<BR ALIGN="LEFT"/>
+          + endMap() : TmxMapWriter<BR ALIGN="LEFT"/>
+          + build() : String
+        </TD></TR>
+      </TABLE>
+    >];
+
+    TmxXml [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;package-private&gt;&gt;</B><BR/><B>TmxXml</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + object(id : int, name : String, x : float, y : float, w : float, h : float, propertiesXml : String) : String {static}<BR ALIGN="LEFT"/>
+          + props(props : String...) : String {static}<BR ALIGN="LEFT"/>
+          + prop(name : String, value : String) : String {static}<BR ALIGN="LEFT"/>
+          + prop(name : String, value : String, type : String) : String {static}<BR ALIGN="LEFT"/>
+          + escape(s : String) : String {static}<BR ALIGN="LEFT"/>
+          + writeCsvLayer(sb : StringBuilder, width : int, height : int, tiles : int[][]) : void {static}<BR ALIGN="LEFT"/>
+          + toCsv(layer : int[][]) : String {static}
+        </TD></TR>
+      </TABLE>
+    >];
+
+    // Representative generators (details covered in other diagrams)
+    RandomArenaTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RandomArenaTmxGenerator</B></TD></TR>
+      </TABLE>
+    >];
+
+    GraphLightsOutTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GraphLightsOutTmxGenerator</B></TD></TR>
+      </TABLE>
+    >];
+
+    RegisterAllocationTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RegisterAllocationTmxGenerator</B></TD></TR>
+      </TABLE>
+    >];
+
+    AlgebraForgeTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>AlgebraForgeTmxGenerator</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_assets {
+    label="com.timonipumba.assets";
+    color="#9BBB59";
+    style="rounded";
+
+    SpriteLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>SpriteLoader</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_core {
+    label="com.timonipumba";
+    color="#4BACC6";
+    style="rounded";
+
+    GameConstants [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;constants&gt;&gt;</B><BR/><B>GameConstants</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_level {
+    label="com.timonipumba.level";
+    color="#8064A2";
+    style="rounded";
+
+    PuzzleRegistry [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>PuzzleRegistry</B></TD></TR>
+      </TABLE>
+    >];
+
+    Puzzle [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>Puzzle</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- External types --------------------
+  subgraph cluster_external {
+    label="External (LibGDX / Ashley / JDK)";
+    color="#999999";
+    style="rounded,dashed";
+
+    Engine [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Engine</B></TD></TR>
+      </TABLE>
+    >];
+
+    Entity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Entity</B></TD></TR>
+      </TABLE>
+    >];
+
+    TiledMap [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMap</B></TD></TR>
+      </TABLE>
+    >];
+
+    LibgdxTmxMapLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TmxMapLoader</B></TD></TR>
+      </TABLE>
+    >];
+
+    FileHandleResolver [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>FileHandleResolver</B></TD></TR>
+      </TABLE>
+    >];
+
+    FileHandle [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>FileHandle</B></TD></TR>
+      </TABLE>
+    >];
+
+    Gdx [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Gdx</B></TD></TR>
+      </TABLE>
+    >];
+
+    StringBuilder [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>StringBuilder</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- Relationships (UML-ish) --------------------
+  // TiledMapLoader: associations
+  TiledMapLoader -> Engine      [style="solid", arrowhead="vee", label="engine"];
+  TiledMapLoader -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+
+  // TiledMapLoader: dependencies
+  TiledMapLoader -> LibgdxTmxMapLoader [style="dashed", arrowhead="vee", label="loads via"];
+  TiledMapLoader -> FileHandleResolver [style="dashed", arrowhead="vee", label="resolver"];
+  TiledMapLoader -> FileHandle         [style="dashed", arrowhead="vee", label="internal/local"];
+  TiledMapLoader -> Gdx                [style="dashed", arrowhead="vee", label="files.*"];
+  TiledMapLoader -> TiledMap           [style="dashed", arrowhead="vee", label="returns"];
+
+  // Creates entities from objects/tiles
+  TiledMapLoader -> Entity [style="dashed", arrowhead="vee", label="creates"];
+
+  // Puzzle lookup/registration when doors define puzzleId
+  TiledMapLoader -> PuzzleRegistry [style="dashed", arrowhead="vee", label="get/register"];
+  TiledMapLoader -> Puzzle         [style="dashed", arrowhead="vee", label="builds/uses"];
+
+  // TMX writer & helpers
+  TmxMapWriter -> StringBuilder [style="solid", arrowhead="vee", label="sb"];
+  TmxMapWriter -> GameConstants [style="dashed", arrowhead="vee", label="tile size"];
+  TmxMapWriter -> TmxXml        [style="dashed", arrowhead="vee", label="writeCsvLayer"];
+
+  // Generators depend on writer/helpers
+  RandomArenaTmxGenerator -> TmxMapWriter [style="dashed", arrowhead="vee", label="builds XML"];
+  RandomArenaTmxGenerator -> TmxXml       [style="dashed", arrowhead="vee", label="object/props"];
+
+  GraphLightsOutTmxGenerator -> TmxMapWriter [style="dashed", arrowhead="vee", label="builds XML"];
+  GraphLightsOutTmxGenerator -> TmxXml       [style="dashed", arrowhead="vee", label="object/props"];
+
+  RegisterAllocationTmxGenerator -> TmxMapWriter [style="dashed", arrowhead="vee", label="builds XML"];
+  RegisterAllocationTmxGenerator -> TmxXml       [style="dashed", arrowhead="vee", label="object/props"];
+
+  AlgebraForgeTmxGenerator -> TmxXml [style="dashed", arrowhead="vee", label="object/props"];
+}

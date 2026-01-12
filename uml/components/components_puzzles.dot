@@ -1,0 +1,74 @@
+digraph ComponentsPuzzles {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.components — puzzle linkage components"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Component</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  TerminalComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TerminalComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ doorId : String<br align="left"/>+ allowHiddenDoor : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleDoorComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleDoorComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ id : String<br align="left"/>+ puzzle : Puzzle<br align="left"/>+ locked : boolean<br align="left"/>+ isFinale : boolean<br align="left"/>+ originalWidth, originalHeight : float<br align="left"/>+ dimensionsStored : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  AlgebraTerminalComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AlgebraTerminalComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ kind : Kind<br align="left"/>+ opId : String<br align="left"/>+ charges : int</TD></TR>
+    </TABLE>
+  >];
+
+  LightsOutNodeComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>LightsOutNodeComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ nodeId : String<br align="left"/>+ neighborsCsv : String<br align="left"/>+ on : boolean<br align="left"/>+ winTrigger : boolean<br align="left"/>+ unlockDoorGroup : String</TD></TR>
+    </TABLE>
+  >];
+
+  RegisterNodeComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RegisterNodeComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ nodeId : String<br align="left"/>+ neighborsCsv : String<br align="left"/>+ assignedRegisterTokenId : String<br align="left"/>+ winTrigger : boolean<br align="left"/>+ unlockDoorGroup : String</TD></TR>
+    </TABLE>
+  >];
+
+  Puzzle [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Puzzle</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  TerminalComponent -> Component [arrowhead="empty", style="solid"];
+  PuzzleDoorComponent -> Component [arrowhead="empty", style="solid"];
+  AlgebraTerminalComponent -> Component [arrowhead="empty", style="solid"];
+  LightsOutNodeComponent -> Component [arrowhead="empty", style="solid"];
+  RegisterNodeComponent -> Component [arrowhead="empty", style="solid"];
+
+  // Associations
+  PuzzleDoorComponent -> Puzzle [label="puzzle", arrowhead="vee", style="solid"];
+
+  // Conceptual linkage (string IDs)
+  TerminalComponent -> PuzzleDoorComponent [label="doorId -> id", style="dashed", arrowhead="vee"];
+  LightsOutNodeComponent -> RegisterNodeComponent [label="nodeId/neighborsCsv pattern", style="dashed", arrowhead="vee"];
+}

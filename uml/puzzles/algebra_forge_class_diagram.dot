@@ -1,0 +1,161 @@
+digraph AlgebraForgeClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): Algebra Forge cluster (focused class diagram)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // -------------------- Packages (clusters) --------------------
+  subgraph cluster_systems {
+    label="com.timonipumba.systems";
+    color="#4F81BD";
+    style="rounded";
+
+    AlgebraForgeSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>AlgebraForgeSystem</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - gameStateManager : GameStateManager<BR ALIGN="LEFT"/>
+          - gateSystem : GateSystem<BR ALIGN="LEFT"/>
+          - ui : OverlayUi<BR ALIGN="LEFT"/>
+          - interactionOpen : boolean<BR ALIGN="LEFT"/>
+          - stateBefore : GameState<BR ALIGN="LEFT"/>
+          - activeTerminalComp : AlgebraTerminalComponent
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + AlgebraForgeSystem(gameStateManager : GameStateManager)<BR ALIGN="LEFT"/>
+          + setGateSystem(gateSystem : GateSystem) : void<BR ALIGN="LEFT"/>
+          + beginInteraction(terminalEntity : Entity) : boolean<BR ALIGN="LEFT"/>
+          + update(deltaTime : float) : void<BR ALIGN="LEFT"/>
+          + dispose() : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    GateSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+        <TR><TD ALIGN="LEFT">(arena gates / enemy-count queries)</TD></TR>
+      </TABLE>
+    >];
+
+    // External supertype (Ashley ECS)
+    EntitySystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>EntitySystem</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_ui {
+    label="com.timonipumba.ui";
+    color="#9BBB59";
+    style="rounded";
+
+    OverlayUi [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>OverlayUi</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + batch : SpriteBatch<BR ALIGN="LEFT"/>
+          + shapes : ShapeRenderer<BR ALIGN="LEFT"/>
+          + font : BitmapFont<BR ALIGN="LEFT"/>
+          + titleFont : BitmapFont<BR ALIGN="LEFT"/>
+          + layout : GlyphLayout
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + OverlayUi(fontScale : float, titleFontScale : float)<BR ALIGN="LEFT"/>
+          + drawPanel(...) : void<BR ALIGN="LEFT"/>
+          + dispose() : void
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_components {
+    label="com.timonipumba.components";
+    color="#8064A2";
+    style="rounded";
+
+    AlgebraTerminalComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>AlgebraTerminalComponent</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + kind : Kind<BR ALIGN="LEFT"/>
+          + opId : String<BR ALIGN="LEFT"/>
+          + charges : int
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_util {
+    label="com.timonipumba.util";
+    color="#C0504D";
+    style="rounded";
+
+    GlyphNames [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;utility&gt;&gt;</B><BR/><B>GlyphNames</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + isGlyph(tokenId : String) : boolean {static}<BR ALIGN="LEFT"/>
+          + displayName(tokenId : String) : String {static}<BR ALIGN="LEFT"/>
+          + displayNameWithId(tokenId : String) : String {static}
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_core {
+    label="com.timonipumba";
+    color="#4BACC6";
+    style="rounded";
+
+    GameStateManager [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - currentState : GameState<BR ALIGN="LEFT"/>
+          + getState() : GameState<BR ALIGN="LEFT"/>
+          + setState(newState : GameState) : void<BR ALIGN="LEFT"/>
+          + isActiveGameplay() : boolean
+        </TD></TR>
+      </TABLE>
+    >];
+
+    GameState [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>GameState</B></TD></TR>
+        <TR><TD ALIGN="LEFT">... ALGEBRA_FORGE_RIDDLE ...</TD></TR>
+      </TABLE>
+    >];
+
+    GameConstants [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;constants&gt;&gt;</B><BR/><B>GameConstants</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- Relationships (UML-ish) --------------------
+  // Inheritance: extends
+  AlgebraForgeSystem -> EntitySystem [style="solid", arrowhead="empty", label="extends"];
+
+  // Composition: created + disposed by AlgebraForgeSystem (strong ownership)
+  AlgebraForgeSystem -> OverlayUi [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="ui"];
+
+  // Associations: field references (solid line)
+  AlgebraForgeSystem -> GameStateManager        [style="solid", arrowhead="vee", label="gameStateManager"];
+  AlgebraForgeSystem -> GateSystem              [style="solid", arrowhead="vee", label="gateSystem"];
+  AlgebraForgeSystem -> AlgebraTerminalComponent [style="solid", arrowhead="vee", label="activeTerminalComp"];
+
+  // Dependency: enum/constants/static helpers used in methods (dashed line)
+  AlgebraForgeSystem -> GameState     [style="dashed", arrowhead="vee", label="uses"];
+  AlgebraForgeSystem -> GameConstants [style="dashed", arrowhead="vee", label="uses"];
+  AlgebraForgeSystem -> GlyphNames    [style="dashed", arrowhead="vee", label="static calls"];
+}

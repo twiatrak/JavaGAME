@@ -1,0 +1,75 @@
+digraph LevelPuzzleHandling {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.level — puzzle handling"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  Map [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Map&lt;K,V&gt;</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;java.util&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  Puzzle [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>Puzzle</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ puzzleId : String<br align="left"/>+ type : String<br align="left"/>+ data : Map&lt;String,String&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleHandler [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;interface&gt;&gt;</B><br/><B>PuzzleHandler</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ getPuzzleType() : String<br align="left"/>+ checkAnswer(puzzle, playerAnswer) : boolean<br align="left"/>+ normalizeAnswer(answer) : String</TD></TR>
+    </TABLE>
+  >];
+
+  CipherPuzzleHandler [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CipherPuzzleHandler</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ getPuzzleType() : String<br align="left"/>+ checkAnswer(puzzle, playerAnswer) : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleRegistry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleRegistry</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- puzzles : Map&lt;String,Puzzle&gt; (static)</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleHandlerRegistry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleHandlerRegistry</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- handlers : Map&lt;String,PuzzleHandler&gt; (static)</TD></TR>
+    </TABLE>
+  >];
+
+  VigenereCipher [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>VigenereCipher</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;utility&gt;&gt;<br align="left"/>+ decrypt(ciphertext,key) : String<br align="left"/>+ encrypt(plaintext,key) : String<br align="left"/>+ normalize(input) : String</TD></TR>
+    </TABLE>
+  >];
+
+  // Realization
+  CipherPuzzleHandler -> PuzzleHandler [arrowhead="empty", style="solid"];
+
+  // Associations
+  Puzzle -> Map [label="data", arrowhead="vee", style="solid"];
+  PuzzleRegistry -> Map [label="puzzles", arrowhead="vee", style="solid"];
+  PuzzleHandlerRegistry -> Map [label="handlers", arrowhead="vee", style="solid"];
+
+  // Dependencies
+  PuzzleRegistry -> Puzzle [style="dashed", arrowhead="vee", label="stores/returns"];
+  PuzzleHandlerRegistry -> PuzzleHandler [style="dashed", arrowhead="vee", label="type dispatch"];
+  PuzzleHandlerRegistry -> CipherPuzzleHandler [style="dashed", arrowhead="vee", label="static register"];
+  CipherPuzzleHandler -> Puzzle [style="dashed", arrowhead="vee", label="reads data"];
+}

@@ -1,0 +1,136 @@
+digraph SystemsProgressionGatesTraversal {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — gates, traversal, progression"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  EntitySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>EntitySystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Systems ---
+  GateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">arena gate policy; corridor spawning; arena graph helpers</TD></TR>
+    </TABLE>
+  >];
+
+  GateSymbolLabelSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateSymbolLabelSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">draws in-world gate bit labels</TD></TR>
+    </TABLE>
+  >];
+
+  DungeonThemeTraversalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>DungeonThemeTraversalSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">global traversal lock + overlay</TD></TR>
+    </TABLE>
+  >];
+
+  TraversalRiddleSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TraversalRiddleSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">legacy per-arena traversal prompt</TD></TR>
+    </TABLE>
+  >];
+
+  PortalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">portal teleport + level transitions</TD></TR>
+    </TABLE>
+  >];
+
+  ExitSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>ExitSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">legacy exits (optional when portals enabled)</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">puzzle-door overlay; may open gates / advance level</TD></TR>
+    </TABLE>
+  >];
+
+  // --- External collaborators ---
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+    </TABLE>
+  >];
+
+  LevelManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>LevelManager</B></TD></TR>
+    </TABLE>
+  >];
+
+  CorridorBuilder [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>CorridorBuilder</B></TD></TR>
+    </TABLE>
+  >];
+
+  TiledMap [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TiledMap</B></TD></TR>
+    </TABLE>
+  >];
+
+  OrthographicCamera [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthographicCamera</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Inheritance ---
+  GateSystem                -> EntitySystem [arrowhead="empty", style="solid"];
+  GateSymbolLabelSystem     -> EntitySystem [arrowhead="empty", style="solid"];
+  DungeonThemeTraversalSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  TraversalRiddleSystem     -> EntitySystem [arrowhead="empty", style="solid"];
+  PortalSystem              -> EntitySystem [arrowhead="empty", style="solid"];
+  ExitSystem                -> EntitySystem [arrowhead="empty", style="solid"];
+  PuzzleOverlaySystem       -> EntitySystem [arrowhead="empty", style="solid"];
+
+  // --- Associations (fields) ---
+  GateSystem            -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  GateSystem            -> CorridorBuilder  [label="corridorBuilder", arrowhead="vee", style="solid"];
+  GateSystem            -> LevelManager     [label="levelManager", arrowhead="vee", style="solid"];
+  GateSystem            -> TiledMap         [label="tiledMap", arrowhead="vee", style="solid"];
+
+  GateSymbolLabelSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> GateSystem       [label="gateSystem", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> OrthographicCamera [label="camera", arrowhead="vee", style="solid"];
+
+  DungeonThemeTraversalSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  DungeonThemeTraversalSystem -> GateSystem       [label="gateSystem", arrowhead="vee", style="solid"];
+
+  TraversalRiddleSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  TraversalRiddleSystem -> GateSystem       [label="gateSystem", arrowhead="vee", style="solid"];
+
+  PortalSystem          -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PortalSystem          -> LevelManager     [label="levelManager", arrowhead="vee", style="solid"];
+
+  ExitSystem            -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+
+  PuzzleOverlaySystem   -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem   -> GateSystem       [label="gateSystem (optional)", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem   -> LevelManager     [label="levelManager (optional)", arrowhead="vee", style="solid"];
+
+  // --- Behavioral dependencies ---
+  DungeonThemeTraversalSystem -> GateSystem [label="consumeLastTraversalSymbol(...)", style="dashed", arrowhead="vee"];
+}

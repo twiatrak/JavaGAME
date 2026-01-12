@@ -1,0 +1,20 @@
+com.timonipumba.components — notes / clustering
+
+This package is mostly ECS data holders (Ashley Component). There is almost no inheritance
+between components; most relationships are “conceptual” (used together on the same entity)
+or via string IDs that link entities across systems/TMX.
+
+Diagrams are intentionally split by responsibility:
+- components_spatial_rendering.dot: shared spatial + rendering primitives
+- components_actors_combat.dot: player/enemy combat state & feedback
+- components_progression_interactions.dot: gates/doors/sockets/switches/portals/exits + pickups
+- components_puzzles.dot: puzzle-specific linkage fields (terminal/door ids, node ids)
+
+Common linkage patterns
+- Door/Switch (legacy): SwitchComponent.group <-> DoorComponent.group
+- Socket “door groups”: SocketComponent.doorGroup unlocks DoorComponent.group or GateDoorComponent.group
+- Terminal -> PuzzleDoor: TerminalComponent.doorId references PuzzleDoorComponent.id
+- Gate traversal: GateComponent.sourceArenaId/targetArenaId (+ optional traversalSymbol)
+- Portal gating: PortalComponent.puzzleId (activation keyed on puzzle completion)
+- Puzzle graphs: LightsOutNodeComponent.nodeId/neighborsCsv; RegisterNodeComponent.nodeId/neighborsCsv
+- Inventory tokens: PlayerInventoryComponent.tokenCounts keyed by TokenComponent.tokenId

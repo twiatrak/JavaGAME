@@ -1,0 +1,147 @@
+digraph ComponentsProgressionInteractions {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.components — progression & interactions"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Component</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  DoorComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>DoorComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ group : String<br align="left"/>+ open : boolean<br align="left"/>+ originalWidth, originalHeight : float<br align="left"/>+ dimensionsStored : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  SwitchComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>SwitchComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;deprecated&gt;&gt;<br align="left"/>+ group : String<br align="left"/>+ on : boolean<br align="left"/>+ momentary : boolean<br align="left"/>+ timer : float</TD></TR>
+    </TABLE>
+  >];
+
+  SocketComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>SocketComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ requiresTokenId : String<br align="left"/>+ doorGroup : String<br align="left"/>+ consumeToken : boolean<br align="left"/>+ activated : boolean<br align="left"/>+ momentary : boolean<br align="left"/>+ momentaryDurationSeconds : float<br align="left"/>+ momentaryTimerSeconds : float</TD></TR>
+    </TABLE>
+  >];
+
+  GateComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ state : GateState<br align="left"/>+ sourceArenaId : String<br align="left"/>+ targetArenaId : String<br align="left"/>+ traversalSymbol : String<br align="left"/>+ openingDuration : float<br align="left"/>+ openingTimer : float<br align="left"/>+ renderOrder : int</TD></TR>
+    </TABLE>
+  >];
+
+  GateDoorComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateDoorComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ group : String</TD></TR>
+    </TABLE>
+  >];
+
+  GateWallComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateWallComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;marker&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  PortalComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PortalComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ puzzleId : String<br align="left"/>+ active : boolean<br align="left"/>+ targetMap : String<br align="left"/>+ segmentIndex : int<br align="left"/>+ segmentLength : int<br align="left"/>+ portalGroupId : String</TD></TR>
+    </TABLE>
+  >];
+
+  ExitComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>ExitComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ targetMap : String</TD></TR>
+    </TABLE>
+  >];
+
+  ItemType [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>ItemType</B></TD></TR>
+      <TR><TD ALIGN="LEFT">POTION<br align="left"/>BUFF<br align="left"/>TREASURE</TD></TR>
+    </TABLE>
+  >];
+
+  ItemComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>ItemComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ itemType : ItemType<br align="left"/>+ healAmount : int</TD></TR>
+    </TABLE>
+  >];
+
+  TokenComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TokenComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ tokenId : String</TD></TR>
+    </TABLE>
+  >];
+
+  PlayerInventoryComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PlayerInventoryComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ tokenCounts : ObjectIntMap&lt;String&gt;<br align="left"/>+ discoveredTokens : ObjectSet&lt;String&gt;<br align="left"/>+ toastMessage : String<br align="left"/>+ toastSecondsRemaining : float</TD></TR>
+    </TABLE>
+  >];
+
+  // External libGDX collections
+  ObjectIntMap [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ObjectIntMap</B></TD></TR>
+    </TABLE>
+  >];
+  ObjectSet [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ObjectSet</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  DoorComponent -> Component [arrowhead="empty", style="solid"];
+  SwitchComponent -> Component [arrowhead="empty", style="solid"];
+  SocketComponent -> Component [arrowhead="empty", style="solid"];
+  GateComponent -> Component [arrowhead="empty", style="solid"];
+  GateDoorComponent -> Component [arrowhead="empty", style="solid"];
+  GateWallComponent -> Component [arrowhead="empty", style="solid"];
+  PortalComponent -> Component [arrowhead="empty", style="solid"];
+  ExitComponent -> Component [arrowhead="empty", style="solid"];
+  ItemComponent -> Component [arrowhead="empty", style="solid"];
+  TokenComponent -> Component [arrowhead="empty", style="solid"];
+  PlayerInventoryComponent -> Component [arrowhead="empty", style="solid"];
+
+  // Associations
+  ItemComponent -> ItemType [label="itemType", arrowhead="vee", style="solid"];
+  PlayerInventoryComponent -> ObjectIntMap [label="tokenCounts", arrowhead="vee", style="solid"];
+  PlayerInventoryComponent -> ObjectSet [label="discoveredTokens", arrowhead="vee", style="solid"];
+
+  // Conceptual linkage (string IDs)
+  DoorComponent -> SwitchComponent [label="group", style="dashed", arrowhead="vee"];
+  SocketComponent -> DoorComponent [label="doorGroup/group", style="dashed", arrowhead="vee"];
+  SocketComponent -> GateDoorComponent [label="doorGroup/group", style="dashed", arrowhead="vee"];
+  PortalComponent -> PuzzleDoorComponent [label="puzzleId", style="dashed", arrowhead="vee"];
+  TokenComponent -> PlayerInventoryComponent [label="tokenId keys", style="dashed", arrowhead="vee"];
+
+  // Placeholder for PuzzleDoorComponent (declared in components_puzzles.dot)
+  PuzzleDoorComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PuzzleDoorComponent</B></TD></TR>
+    </TABLE>
+  >];
+}

@@ -1,0 +1,130 @@
+digraph TmxLoaderDispatchOverview {
+  rankdir=LR;
+  graph [fontname="Segoe UI", fontsize=11, labelloc=t,
+    label="UML (Graphviz): TMX dispatch overview (TiledMapLoader)" ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // --- Core class ---
+  TiledMapLoader [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TiledMapLoader</B></TD></TR>
+      <TR><TD ALIGN="LEFT">
+        + loadMap(mapPath : String) : TiledMap<BR ALIGN="LEFT"/>
+        - loadWallLayer(layer : TiledMapTileLayer) : void<BR ALIGN="LEFT"/>
+        - loadObjectLayer(layer : MapLayer) : void
+      </TD></TR>
+      <TR><TD ALIGN="LEFT">
+        // Object-type handlers (via property: type)<BR ALIGN="LEFT"/>
+        - createPlayer(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createEnemy(x : float, y : float, enemyType : String, arenaId : String) : void<BR ALIGN="LEFT"/>
+        - createItem(x : float, y : float, itemType : ItemType) : void<BR ALIGN="LEFT"/>
+        - createDoor(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createPuzzleDoor(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createExit(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createGate(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createToken(obj : MapObject, x : float, y : float) : void<BR ALIGN="LEFT"/>
+        - createSocket(obj : MapObject, x : float, y : float) : void
+      </TD></TR>
+    </TABLE>
+  >];
+
+  // --- External / data types ---
+  Engine [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Engine</B></TD></TR></TABLE>
+  >];
+  MapLayer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>MapLayer</B></TD></TR></TABLE>
+  >];
+  MapObject [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>MapObject</B></TD></TR></TABLE>
+  >];
+  RectangleMapObject [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>RectangleMapObject</B></TD></TR></TABLE>
+  >];
+  TiledMapTileMapObject [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMapTileMapObject</B></TD></TR></TABLE>
+  >];
+  TiledMapTileLayer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMapTileLayer</B></TD></TR></TABLE>
+  >];
+  TiledMap [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TiledMap</B></TD></TR></TABLE>
+  >];
+
+  // --- Conceptual: object types (from MapObject.properties["type"]) ---
+  TmxType_player [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>player</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_enemy [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>enemy</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_potion [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>potion</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_buff [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>buff</B></TD></TR>
+      <TR><TD ALIGN="LEFT">(case exists; implementation appears incomplete)</TD></TR>
+    </TABLE>
+  >];
+  TmxType_door [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>door</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_puzzledoor [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>puzzledoor</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_exit [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>exit</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_gate [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>gate</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_token [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>token</B></TD></TR>
+    </TABLE>
+  >];
+  TmxType_socket [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;tmxObjectType&gt;&gt;</B><BR/><B>socket</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- UML-ish relations ---
+  TiledMapLoader -> Engine [style="solid", arrowhead="vee", label="engine"];
+
+  TiledMapLoader -> TiledMap [style="dashed", arrowhead="vee", label="returns"];
+  TiledMapLoader -> MapLayer [style="dashed", arrowhead="vee", label="iterates layers"];
+  TiledMapLoader -> MapObject [style="dashed", arrowhead="vee", label="reads properties"];
+  TiledMapLoader -> RectangleMapObject [style="dashed", arrowhead="vee", label="rect objects"];
+  TiledMapLoader -> TiledMapTileMapObject [style="dashed", arrowhead="vee", label="tile objects"];
+  TiledMapLoader -> TiledMapTileLayer [style="dashed", arrowhead="vee", label="wall layer"];
+
+  // Dispatch mapping
+  TmxType_player -> TiledMapLoader [style="dashed", arrowhead="vee", label="createPlayer"];
+  TmxType_enemy  -> TiledMapLoader [style="dashed", arrowhead="vee", label="createEnemy"];
+  TmxType_potion -> TiledMapLoader [style="dashed", arrowhead="vee", label="createItem(POTION)"];
+  TmxType_buff   -> TiledMapLoader [style="dashed", arrowhead="vee", label="(see code)"];
+  TmxType_door   -> TiledMapLoader [style="dashed", arrowhead="vee", label="createDoor"];
+  TmxType_puzzledoor -> TiledMapLoader [style="dashed", arrowhead="vee", label="createPuzzleDoor"];
+  TmxType_exit   -> TiledMapLoader [style="dashed", arrowhead="vee", label="createExit"];
+  TmxType_gate   -> TiledMapLoader [style="dashed", arrowhead="vee", label="createGate"];
+  TmxType_token  -> TiledMapLoader [style="dashed", arrowhead="vee", label="createToken"];
+  TmxType_socket -> TiledMapLoader [style="dashed", arrowhead="vee", label="createSocket"];
+}

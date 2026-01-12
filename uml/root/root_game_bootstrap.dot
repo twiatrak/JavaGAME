@@ -1,0 +1,135 @@
+digraph RootGameBootstrap {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba — game bootstrap & state"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // External framework types
+  ApplicationAdapter [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ApplicationAdapter</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  Engine [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Engine</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  OrthographicCamera [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthographicCamera</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  TiledMap [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TiledMap</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+  OrthogonalTiledMapRenderer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthogonalTiledMapRenderer</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  // Root game/state classes
+  GameState [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>GameState</B></TD></TR>
+      <TR><TD ALIGN="LEFT">PLAYING<br align="left"/>GAME_OVER<br align="left"/>LEVEL_CLEAR<br align="left"/>EXPLORATION<br align="left"/>PUZZLE<br align="left"/>TRAVERSAL_RIDDLE<br align="left"/>REGISTER_ALLOCATION_RIDDLE<br align="left"/>LIGHTS_OUT_RIDDLE<br align="left"/>ALGEBRA_FORGE_RIDDLE<br align="left"/>LEVEL_COMPLETE</TD></TR>
+    </TABLE>
+  >];
+
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- currentState : GameState</TD></TR>
+    </TABLE>
+  >];
+
+  GameConstants [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GameConstants</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;static constants&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  LevelManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;interface&gt;&gt;</B><br/><B>LevelManager</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ loadNextLevel() : void<br align="left"/>+ restartLevel() : void</TD></TR>
+    </TABLE>
+  >];
+
+  TiledMapGame [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TiledMapGame</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- engine : Engine<br align="left"/>- camera : OrthographicCamera<br align="left"/>- gameStateManager : GameStateManager<br align="left"/>- tiledMap : TiledMap<br align="left"/>- mapRenderer : OrthogonalTiledMapRenderer</TD></TR>
+    </TABLE>
+  >];
+
+  // Other core collaborators (defined elsewhere)
+  SpriteLoader [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SpriteLoader</B></TD></TR>
+    </TABLE>
+  >];
+  CameraModeManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>CameraModeManager</B></TD></TR>
+    </TABLE>
+  >];
+  TiledMapLoader [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TiledMapLoader</B></TD></TR>
+    </TABLE>
+  >];
+  GeneratedMapMode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>GeneratedMapMode</B></TD></TR>
+    </TABLE>
+  >];
+  GeneratedRunMode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>GeneratedRunMode</B></TD></TR>
+    </TABLE>
+  >];
+  PuzzleRegistry [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PuzzleRegistry</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;static registry&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance / realization
+  TiledMapGame -> ApplicationAdapter [arrowhead="empty", style="solid"];
+  TiledMapGame -> LevelManager [arrowhead="empty", style="solid"];
+
+  // Associations (fields)
+  GameStateManager -> GameState [label="currentState", arrowhead="vee", style="solid"];
+  TiledMapGame -> Engine [label="engine", arrowhead="vee", style="solid"];
+  TiledMapGame -> OrthographicCamera [label="camera", arrowhead="vee", style="solid"];
+  TiledMapGame -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  TiledMapGame -> TiledMap [label="tiledMap", arrowhead="vee", style="solid"];
+  TiledMapGame -> OrthogonalTiledMapRenderer [label="mapRenderer", arrowhead="vee", style="solid"];
+
+  // Dependencies (construction / static usage)
+  TiledMapGame -> SpriteLoader [style="dashed", arrowhead="vee", label="creates/uses"];
+  TiledMapGame -> CameraModeManager [style="dashed", arrowhead="vee", label="creates/uses"];
+  TiledMapGame -> TiledMapLoader [style="dashed", arrowhead="vee", label="creates"];
+  TiledMapGame -> GameConstants [style="dashed", arrowhead="vee", label="reads constants"];
+  TiledMapGame -> PuzzleRegistry [style="dashed", arrowhead="vee", label="clear()"];
+  TiledMapGame -> GeneratedMapMode [style="dashed", arrowhead="vee"];
+  TiledMapGame -> GeneratedRunMode [style="dashed", arrowhead="vee"];
+}

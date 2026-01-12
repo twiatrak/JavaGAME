@@ -1,0 +1,92 @@
+buildscript {
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        google()
+    }
+    dependencies {
+        
+    }
+}
+
+allprojects {
+    apply plugin: "eclipse"
+
+    version = '1.0'
+    ext {
+        appName = "timonipumba"
+        gdxVersion = '1.11.0'
+        ashleyVersion = '1.7.4'
+    }
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        gradlePluginPortal()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+    }
+}
+
+project(":desktop") {
+    apply plugin: "java-library"
+    apply plugin: "application"
+
+    application {
+        mainClass = "com.timonipumba.DesktopLauncher"
+    }
+
+    dependencies {
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+    }
+
+    // Make JVM args OS-aware. -XstartOnFirstThread is only valid on macOS.
+    run {
+        def os = System.properties['os.name'].toLowerCase()
+        jvmArgs = []
+        if (os.contains('mac')) {
+            jvmArgs += "-XstartOnFirstThread"      // required on macOS for LWJGL
+        }
+        // This flag silences native access warnings on Java 21+; harmless on Java 17.
+        jvmArgs += "--enable-native-access=ALL-UNNAMED"
+    }
+
+    task dist(type: Jar) {
+        duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+        archiveBaseName = 'timonipumba'
+        from files(sourceSets.main.output.classesDirs)
+        from files(sourceSets.main.output.resourcesDir)
+        from {configurations.runtimeClasspath.collect {zipTree(it)}}
+
+        manifest {
+            attributes 'Main-Class': application.mainClass.get()
+        }
+    }
+
+    dist.dependsOn classes
+}
+
+project(":core") {
+    apply plugin: "java-library"
+
+    dependencies {
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.ashley:ashley:$ashleyVersion"
+        api "com.badlogicgames.gdx:gdx-tools:$gdxVersion"
+        
+        // JUnit 5 for testing
+        testImplementation "org.junit.jupiter:junit-jupiter:5.10.2"
+        testRuntimeOnly "org.junit.platform:junit-platform-launcher:1.10.2"
+    }
+    
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+    }
+    
+    // (ML/AI training CLI removed)
+}

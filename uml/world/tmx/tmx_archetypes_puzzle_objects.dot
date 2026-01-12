@@ -1,0 +1,93 @@
+digraph TmxArchetypesPuzzleObjects {
+  rankdir=LR;
+  graph [fontname="Segoe UI", fontsize=11, labelloc=t,
+    label="UML (Graphviz): TMX archetypes — puzzle objects (token/socket/doors)" ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Archetypes
+  TokenEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Token (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">TMX type=token</TD></TR>
+    </TABLE>
+  >];
+
+  SocketEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Socket (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">TMX type=socket</TD></TR>
+    </TABLE>
+  >];
+
+  DoorEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Door (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">TMX type=door</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleDoorEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>PuzzleDoor (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">TMX type=puzzledoor</TD></TR>
+    </TABLE>
+  >];
+
+  // Components (subset)
+  PositionComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR></TABLE>>];
+  CollisionComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>CollisionComponent</B></TD></TR></TABLE>>];
+  RenderableComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR></TABLE>>];
+  SpriteComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>SpriteComponent</B></TD></TR></TABLE>>];
+  AnimationComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>AnimationComponent</B></TD></TR></TABLE>>];
+
+  TokenComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>TokenComponent</B></TD></TR></TABLE>>];
+  SocketComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>SocketComponent</B></TD></TR></TABLE>>];
+  RegisterNodeComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>RegisterNodeComponent</B></TD></TR></TABLE>>];
+  LightsOutNodeComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>LightsOutNodeComponent</B></TD></TR></TABLE>>];
+
+  DoorComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>DoorComponent</B></TD></TR></TABLE>>];
+  PuzzleDoorComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PuzzleDoorComponent</B></TD></TR></TABLE>>];
+
+  PuzzleRegistry [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PuzzleRegistry</B></TD></TR></TABLE>>];
+  Puzzle [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>Puzzle</B></TD></TR></TABLE>>];
+
+  RegisterAllocationSystem [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR></TABLE>>];
+  GraphLightsOutSystem [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>GraphLightsOutSystem</B></TD></TR></TABLE>>];
+
+  // Ownership
+  TokenEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> TokenComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  TokenEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="tile/spriteLoader"];
+  TokenEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  SocketEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> SocketComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  SocketEntity -> RegisterNodeComponent [style="dashed", arrowhead="vee", label="if puzzleType=RegisterAllocation"];
+  SocketEntity -> LightsOutNodeComponent [style="dashed", arrowhead="vee", label="if puzzleType=GraphLightsOut"];
+  SocketEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="tile/spriteLoader"];
+  SocketEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  DoorEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  DoorEntity -> DoorComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+
+  PuzzleDoorEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PuzzleDoorEntity -> PuzzleDoorComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+
+  // Puzzle plumbing
+  PuzzleDoorComponent -> Puzzle [style="solid", arrowhead="vee", label="puzzle"];
+  PuzzleDoorEntity -> PuzzleRegistry [style="dashed", arrowhead="vee", label="lookup/register"];
+
+  // Puzzle type constants (used by loader when adding node components)
+  SocketEntity -> RegisterAllocationSystem [style="dashed", arrowhead="vee", label="PUZZLE_TYPE"];
+  SocketEntity -> GraphLightsOutSystem [style="dashed", arrowhead="vee", label="PUZZLE_TYPE"];
+}

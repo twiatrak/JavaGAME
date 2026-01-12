@@ -1,0 +1,127 @@
+digraph SpriteLoaderClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): SpriteLoader cluster (focused class diagram)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  subgraph cluster_assets {
+    label="com.timonipumba.assets";
+    color="#4F81BD";
+    style="rounded";
+
+    SpriteLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>SpriteLoader</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - loaded : boolean<BR ALIGN="LEFT"/>
+          - tileset : Texture<BR ALIGN="LEFT"/>
+          - playerFullTexture : Texture<BR ALIGN="LEFT"/>
+          - sprites*Texture : Texture<BR ALIGN="LEFT"/>
+          - *Sprite : TextureRegion
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + SpriteLoader()<BR ALIGN="LEFT"/>
+          + load() : void<BR ALIGN="LEFT"/>
+          + isLoaded() : boolean<BR ALIGN="LEFT"/>
+          + getPlayerSprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + getPlayerFullSprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + getEnemySprite(enemyType : EnemyType) : TextureRegion<BR ALIGN="LEFT"/>
+          + getItemSprite(itemType : ItemType) : TextureRegion<BR ALIGN="LEFT"/>
+          + getProjectileSprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + getTerminalSprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + getTokenKeySprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + getSocketChestSprite() : TextureRegion<BR ALIGN="LEFT"/>
+          + dispose() : void
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_components {
+    label="com.timonipumba.components";
+    color="#8064A2";
+    style="rounded";
+
+    ItemType [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>ItemType</B></TD></TR>
+      </TABLE>
+    >];
+
+    EnemyType [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>EnemyType</B></TD></TR>
+        <TR><TD ALIGN="LEFT">DEFAULT, BRUTE, SCOUT, RANGER</TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_app {
+    label="com.timonipumba (wiring / lifecycle)";
+    color="#4BACC6";
+    style="rounded";
+
+    TiledMapGame [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>TiledMapGame</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_systems {
+    label="com.timonipumba.systems (dependents)";
+    color="#9BBB59";
+    style="rounded";
+
+    PlayerInputSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+      </TABLE>
+    >];
+
+    EnemyAISystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>EnemyAISystem</B></TD></TR>
+      </TABLE>
+    >];
+
+    GateSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_world {
+    label="com.timonipumba.world (dependents)";
+    color="#C0504D";
+    style="rounded";
+
+    TiledMapLoader [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>TiledMapLoader</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- Relationships --------------------
+  // Composition: game creates + disposes SpriteLoader (lifecycle owner)
+  TiledMapGame -> SpriteLoader [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="spriteLoader"];
+
+  // Associations: other runtime objects store a SpriteLoader reference (field)
+  PlayerInputSystem -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+  EnemyAISystem     -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+  GateSystem        -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+  TiledMapLoader    -> SpriteLoader [style="solid", arrowhead="vee", label="spriteLoader"];
+
+  // Dependencies: types used by API
+  SpriteLoader -> EnemyType [style="dashed", arrowhead="vee", label="getEnemySprite(type)"];
+  SpriteLoader -> ItemType  [style="dashed", arrowhead="vee", label="getItemSprite(type)"];
+}

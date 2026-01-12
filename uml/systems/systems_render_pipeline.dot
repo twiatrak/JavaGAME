@@ -1,0 +1,73 @@
+digraph SystemsRenderPipeline {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — render pipeline (camera/animation/render)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Base types
+  IteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>IteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+  SortedIteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SortedIteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Systems
+  CameraSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CameraSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">follow + zoom + shake</TD></TR>
+    </TABLE>
+  >];
+
+  AnimationSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AnimationSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">advance animations</TD></TR>
+    </TABLE>
+  >];
+
+  RenderingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RenderingSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">sorted entity rendering</TD></TR>
+    </TABLE>
+  >];
+
+  // External rendering primitives
+  OrthographicCamera [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthographicCamera</B></TD></TR>
+    </TABLE>
+  >];
+  SpriteBatch [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SpriteBatch</B></TD></TR>
+    </TABLE>
+  >];
+  ShapeRenderer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ShapeRenderer</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  CameraSystem    -> IteratingSystem [arrowhead="empty", style="solid"];
+  AnimationSystem -> IteratingSystem [arrowhead="empty", style="solid"];
+  RenderingSystem -> SortedIteratingSystem [arrowhead="empty", style="solid"];
+
+  // Associations (held fields / resources)
+  RenderingSystem -> OrthographicCamera [label="camera", arrowhead="vee", style="solid"];
+  RenderingSystem -> SpriteBatch [label="spriteBatch", arrowhead="vee", style="solid"];
+  RenderingSystem -> ShapeRenderer [label="shapeRenderer", arrowhead="vee", style="solid"];
+}

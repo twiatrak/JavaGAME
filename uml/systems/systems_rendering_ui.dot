@@ -1,0 +1,120 @@
+digraph SystemsRenderingUI {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — rendering/camera/HUD (FULL view)\nSee also: systems_render_pipeline.dot, systems_hud_and_overlays.dot"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Base types
+  EntitySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>EntitySystem</B></TD></TR>
+    </TABLE>
+  >];
+  IteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>IteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+  SortedIteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SortedIteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Systems
+  RenderingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RenderingSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">entity rendering (sorted)</TD></TR>
+    </TABLE>
+  >];
+
+  CameraSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CameraSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">follow + zoom + shake</TD></TR>
+    </TABLE>
+  >];
+
+  AnimationSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AnimationSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">advance animations</TD></TR>
+    </TABLE>
+  >];
+
+  HUDSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HUDSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">HUD + minimap/puzzle status</TD></TR>
+    </TABLE>
+  >];
+
+  // External collaborators
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+    </TABLE>
+  >];
+  OrthographicCamera [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthographicCamera</B></TD></TR>
+    </TABLE>
+  >];
+  SpriteBatch [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SpriteBatch</B></TD></TR>
+    </TABLE>
+  >];
+  ShapeRenderer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ShapeRenderer</B></TD></TR>
+    </TABLE>
+  >];
+  BitmapFont [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>BitmapFont</B></TD></TR>
+    </TABLE>
+  >];
+
+  GateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+    </TABLE>
+  >];
+  DungeonThemeTraversalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>DungeonThemeTraversalSystem</B></TD></TR>
+    </TABLE>
+  >];
+  RegisterAllocationSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  RenderingSystem -> SortedIteratingSystem [arrowhead="empty", style="solid"];
+  CameraSystem    -> IteratingSystem [arrowhead="empty", style="solid"];
+  AnimationSystem -> IteratingSystem [arrowhead="empty", style="solid"];
+  HUDSystem       -> EntitySystem [arrowhead="empty", style="solid"];
+
+  // Associations / wiring
+  RenderingSystem -> OrthographicCamera [label="camera", arrowhead="vee", style="solid"];
+  RenderingSystem -> SpriteBatch [label="spriteBatch", arrowhead="vee", style="solid"];
+  RenderingSystem -> ShapeRenderer [label="shapeRenderer", arrowhead="vee", style="solid"];
+
+  HUDSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  HUDSystem -> SpriteBatch [label="batch", arrowhead="vee", style="solid"];
+  HUDSystem -> ShapeRenderer [label="shapes", arrowhead="vee", style="solid"];
+  HUDSystem -> BitmapFont [label="font(s)", arrowhead="vee", style="solid"];
+  HUDSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> DungeonThemeTraversalSystem [label="dungeonThemeTraversalSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> RegisterAllocationSystem [label="registerAllocationSystem", arrowhead="vee", style="solid"];
+}

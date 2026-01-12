@@ -1,0 +1,145 @@
+digraph SystemsHudAndOverlays {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — HUD & overlay rendering"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  EntitySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>EntitySystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Systems that draw overlay/UI
+  HUDSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HUDSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">HUD + minimap/puzzle status</TD></TR>
+    </TABLE>
+  >];
+
+  GateSymbolLabelSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateSymbolLabelSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">in-world gate “0/1” labels</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">puzzle-door overlay</TD></TR>
+    </TABLE>
+  >];
+
+  GraphLightsOutIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GraphLightsOutIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key rules overlay</TD></TR>
+    </TABLE>
+  >];
+
+  RegisterAllocationIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RegisterAllocationIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key rules overlay</TD></TR>
+    </TABLE>
+  >];
+
+  AlgebraForgeIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AlgebraForgeIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key rules overlay</TD></TR>
+    </TABLE>
+  >];
+
+  DungeonThemeTraversalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>DungeonThemeTraversalSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">traversal lock instructions overlay</TD></TR>
+    </TABLE>
+  >];
+
+  TraversalRiddleSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TraversalRiddleSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">legacy per-arena overlay</TD></TR>
+    </TABLE>
+  >];
+
+  // External primitives
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+    </TABLE>
+  >];
+  GateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+    </TABLE>
+  >];
+  OrthographicCamera [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OrthographicCamera</B></TD></TR>
+    </TABLE>
+  >];
+  SpriteBatch [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SpriteBatch</B></TD></TR>
+    </TABLE>
+  >];
+  BitmapFont [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>BitmapFont</B></TD></TR>
+    </TABLE>
+  >];
+  OverlayUi [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OverlayUi</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  HUDSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  GateSymbolLabelSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  PuzzleOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  GraphLightsOutIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  DungeonThemeTraversalSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  TraversalRiddleSystem -> EntitySystem [arrowhead="empty", style="solid"];
+
+  // Associations
+  HUDSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  HUDSystem -> SpriteBatch [label="batch", arrowhead="vee", style="solid"];
+  HUDSystem -> BitmapFont [label="font(s)", arrowhead="vee", style="solid"];
+  HUDSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> DungeonThemeTraversalSystem [label="dungeonThemeTraversalSystem", arrowhead="vee", style="solid"];
+
+  GateSymbolLabelSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> OrthographicCamera [label="camera", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> SpriteBatch [label="batch", arrowhead="vee", style="solid"];
+  GateSymbolLabelSystem -> BitmapFont [label="font", arrowhead="vee", style="solid"];
+
+  PuzzleOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+
+  GraphLightsOutIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  GraphLightsOutIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+
+  DungeonThemeTraversalSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  DungeonThemeTraversalSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  TraversalRiddleSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  TraversalRiddleSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+}

@@ -1,0 +1,64 @@
+digraph UiOverlayUi {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.ui — OverlayUi"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  Disposable [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Disposable</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;libGDX&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  SpriteBatch [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>SpriteBatch</B></TD></TR>
+    </TABLE>
+  >];
+  ShapeRenderer [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>ShapeRenderer</B></TD></TR>
+    </TABLE>
+  >];
+  BitmapFont [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>BitmapFont</B></TD></TR>
+    </TABLE>
+  >];
+  GlyphLayout [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GlyphLayout</B></TD></TR>
+    </TABLE>
+  >];
+  Color [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Color</B></TD></TR>
+    </TABLE>
+  >];
+
+  OverlayUi [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>OverlayUi</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ batch : SpriteBatch<br align="left"/>+ shapes : ShapeRenderer<br align="left"/>+ font : BitmapFont<br align="left"/>+ titleFont : BitmapFont<br align="left"/>+ layout : GlyphLayout</TD></TR>
+    </TABLE>
+  >];
+
+  // Realization
+  OverlayUi -> Disposable [arrowhead="empty", style="solid"];
+
+  // Associations
+  OverlayUi -> SpriteBatch [label="batch", arrowhead="vee", style="solid"];
+  OverlayUi -> ShapeRenderer [label="shapes", arrowhead="vee", style="solid"];
+  OverlayUi -> BitmapFont [label="font/titleFont", arrowhead="vee", style="solid"];
+  OverlayUi -> GlyphLayout [label="layout", arrowhead="vee", style="solid"];
+
+  // Dependencies (method params)
+  OverlayUi -> Color [style="dashed", arrowhead="vee", label="drawPanel(fill,border)"];
+}

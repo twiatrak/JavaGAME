@@ -1,0 +1,70 @@
+digraph TmxArchetypesCombatants {
+  rankdir=LR;
+  graph [fontname="Segoe UI", fontsize=11, labelloc=t,
+    label="UML (Graphviz): TMX archetypes — combatants (player/enemy)" ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Conceptual archetypes
+  PlayerEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Player (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Spawned from TMX type=player</TD></TR>
+    </TABLE>
+  >];
+
+  EnemyEntity [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;archetype&gt;&gt;</B><BR/><B>Enemy (Entity)</B></TD></TR>
+      <TR><TD ALIGN="LEFT">Spawned from TMX type=enemy (enemy_type)</TD></TR>
+    </TABLE>
+  >];
+
+  // Key components (subset)
+  PositionComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR></TABLE>>];
+  VelocityComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>VelocityComponent</B></TD></TR></TABLE>>];
+  CollisionComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>CollisionComponent</B></TD></TR></TABLE>>];
+  RenderableComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR></TABLE>>];
+  SpriteComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>SpriteComponent</B></TD></TR></TABLE>>];
+  AnimationComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>AnimationComponent</B></TD></TR></TABLE>>];
+
+  PlayerComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PlayerComponent</B></TD></TR></TABLE>>];
+  PlayerInventoryComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>PlayerInventoryComponent</B></TD></TR></TABLE>>];
+
+  EnemyComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>EnemyComponent</B></TD></TR></TABLE>>];
+  EnemyStatsComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>EnemyStatsComponent</B></TD></TR></TABLE>>];
+  RangedAttackWindupComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>RangedAttackWindupComponent</B></TD></TR></TABLE>>];
+
+  HealthComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>HealthComponent</B></TD></TR></TABLE>>];
+  CombatComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>CombatComponent</B></TD></TR></TABLE>>];
+  HitFlashComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>HitFlashComponent</B></TD></TR></TABLE>>];
+  CameraShakeComponent [label=<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6"><TR><TD ALIGN="CENTER"><B>CameraShakeComponent</B></TD></TR></TABLE>>];
+
+  // Ownership (components added to entity)
+  PlayerEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> VelocityComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> PlayerComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> PlayerInventoryComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> HealthComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CombatComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> HitFlashComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> CameraShakeComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  PlayerEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional (spriteLoader)"];
+  PlayerEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+
+  EnemyEntity -> PositionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> VelocityComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> CollisionComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> RenderableComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> EnemyComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> EnemyStatsComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> HealthComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> CombatComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> HitFlashComponent [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="has"];
+  EnemyEntity -> RangedAttackWindupComponent [style="dashed", arrowhead="vee", label="only for some enemy_type"];
+  EnemyEntity -> SpriteComponent [style="dashed", arrowhead="vee", label="optional (spriteLoader)"];
+  EnemyEntity -> AnimationComponent [style="dashed", arrowhead="vee", label="optional"];
+}

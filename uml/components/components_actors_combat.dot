@@ -1,0 +1,102 @@
+digraph ComponentsActorsCombat {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.components — actors & combat"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  Component [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Component</B></TD></TR>
+      <TR><TD ALIGN="LEFT">&lt;&lt;Ashley&gt;&gt;</TD></TR>
+    </TABLE>
+  >];
+
+  PlayerComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PlayerComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ speed : float</TD></TR>
+    </TABLE>
+  >];
+
+  EnemyComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>EnemyComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ arenaId : String<br align="left"/>+ speed : float<br align="left"/>+ detectionRange : float<br align="left"/>+ isAggroed : boolean<br align="left"/>+ strafeTimer : float<br align="left"/>+ strafeDirection : int</TD></TR>
+    </TABLE>
+  >];
+
+  EnemyStatsComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>EnemyStatsComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ enemyType : EnemyType<br align="left"/>+ speed : float<br align="left"/>+ damage : int<br align="left"/>+ maxHealth : int<br align="left"/>+ isRanged : boolean<br align="left"/>+ preferredDistance : float<br align="left"/>+ attackCooldown : float<br align="left"/>+ aggroRadius : float</TD></TR>
+    </TABLE>
+  >];
+
+  HealthComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HealthComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ maxHealth : int<br align="left"/>+ currentHealth : int<br align="left"/>+ alive : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  CombatComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CombatComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ attackDamage : int<br align="left"/>+ attackCooldown : float<br align="left"/>+ cooldownTimer : float</TD></TR>
+    </TABLE>
+  >];
+
+  ProjectileComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>ProjectileComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ damage : int<br align="left"/>+ lifetime : float<br align="left"/>+ timeAlive : float<br align="left"/>+ ownerIsPlayer : boolean</TD></TR>
+    </TABLE>
+  >];
+
+  RangedAttackWindupComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RangedAttackWindupComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ isWindingUp : boolean<br align="left"/>+ windupTimer : float<br align="left"/>+ targetDirX, targetDirY : float</TD></TR>
+    </TABLE>
+  >];
+
+  HitFlashComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HitFlashComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ flashTimer : float<br align="left"/>+ flashColor : Color<br align="left"/>+ defaultFlashDuration : float</TD></TR>
+    </TABLE>
+  >];
+
+  CameraShakeComponent [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CameraShakeComponent</B></TD></TR>
+      <TR><TD ALIGN="LEFT">+ shakeTimer : float<br align="left"/>+ shakeIntensity : float</TD></TR>
+    </TABLE>
+  >];
+
+  Color [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>Color</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  PlayerComponent -> Component [arrowhead="empty", style="solid"];
+  EnemyComponent -> Component [arrowhead="empty", style="solid"];
+  EnemyStatsComponent -> Component [arrowhead="empty", style="solid"];
+  HealthComponent -> Component [arrowhead="empty", style="solid"];
+  CombatComponent -> Component [arrowhead="empty", style="solid"];
+  ProjectileComponent -> Component [arrowhead="empty", style="solid"];
+  RangedAttackWindupComponent -> Component [arrowhead="empty", style="solid"];
+  HitFlashComponent -> Component [arrowhead="empty", style="solid"];
+  CameraShakeComponent -> Component [arrowhead="empty", style="solid"];
+
+  // Associations
+  HitFlashComponent -> Color [label="flashColor", arrowhead="vee", style="solid"];
+}

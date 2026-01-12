@@ -1,0 +1,67 @@
+digraph UtilGlyphNamesClassDiagram {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.util (GlyphNames)"
+  ];
+
+  node [
+    fontname="Segoe UI",
+    fontsize=10,
+    shape=plaintext
+  ];
+
+  edge [
+    fontname="Segoe UI",
+    fontsize=9,
+    color="#444444",
+    arrowsize=0.8
+  ];
+
+  // --- Class ---
+  GlyphNames [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;utility&gt;&gt;</B><BR/><B>GlyphNames</B></TD></TR>
+      <TR><TD ALIGN="LEFT">(static helpers for glyph token IDs)</TD></TR>
+      <TR><TD ALIGN="LEFT">
+        + isGlyph(tokenId : String) : boolean {static}<BR ALIGN="LEFT"/>
+        + displayName(tokenId : String) : String {static}<BR ALIGN="LEFT"/>
+        + displayNameWithId(tokenId : String) : String {static}
+      </TD></TR>
+    </TABLE>
+  >];
+
+  // External dependents (kept minimal)
+  AlgebraForgeSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>AlgebraForgeSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  HUDSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>HUDSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  TokenPickupSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TokenPickupSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  PlayerInputSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Relationships ---
+  // These are dependencies (methods call GlyphNames.*)
+  AlgebraForgeSystem -> GlyphNames [label="uses", style="dashed", arrowhead="vee"];
+  HUDSystem         -> GlyphNames [label="uses", style="dashed", arrowhead="vee"];
+  TokenPickupSystem -> GlyphNames [label="uses", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> GlyphNames [label="uses", style="dashed", arrowhead="vee"];
+}

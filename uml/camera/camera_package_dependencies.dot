@@ -1,0 +1,76 @@
+digraph CameraClassDiagram {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.camera"
+  ];
+
+  // UML-ish defaults
+  node [
+    fontname="Segoe UI",
+    fontsize=10,
+    shape=plaintext
+  ];
+
+  edge [
+    fontname="Segoe UI",
+    fontsize=9,
+    color="#444444",
+    arrowsize=0.8
+  ];
+
+  // --- Classes / enums (compartment-style) ---
+  CameraMode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>CameraMode</B></TD></TR>
+      <TR><TD ALIGN="LEFT">EXPLORATION<BR ALIGN="LEFT"/>FIGHT</TD></TR>
+    </TABLE>
+  >];
+
+  CameraModeManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CameraModeManager</B></TD></TR>
+      <TR><TD ALIGN="LEFT">- currentMode : CameraMode</TD></TR>
+      <TR><TD ALIGN="LEFT">
+        + CameraModeManager()<BR ALIGN="LEFT"/>
+        + getMode() : CameraMode<BR ALIGN="LEFT"/>
+        + setMode(newMode : CameraMode) : void<BR ALIGN="LEFT"/>
+        + toggle() : void<BR ALIGN="LEFT"/>
+        + isExploration() : boolean<BR ALIGN="LEFT"/>
+        + isFight() : boolean<BR ALIGN="LEFT"/>
+        + reset() : void
+      </TD></TR>
+    </TABLE>
+  >];
+
+  // External types that interact with this package (kept lightweight)
+  CameraSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>CameraSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  PlayerInputSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  TiledMapGame [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>TiledMapGame</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Relationships (UML-ish) ---
+  // Association: manager holds a mode (attribute).
+  CameraModeManager -> CameraMode [label="currentMode", arrowhead="vee", style="solid"];
+
+  // Dependencies: other classes use the manager/mode at runtime.
+  CameraSystem      -> CameraModeManager [label="uses", style="dashed", arrowhead="vee"];
+  CameraSystem      -> CameraMode        [label="uses", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> CameraModeManager [label="uses", style="dashed", arrowhead="vee"];
+  TiledMapGame      -> CameraModeManager [label="wires", style="dashed", arrowhead="vee"];
+}

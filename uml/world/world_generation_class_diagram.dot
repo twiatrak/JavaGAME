@@ -1,0 +1,315 @@
+digraph WorldGenerationClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.world generation / TMX generators (focused class diagram)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // -------------------- Packages (clusters) --------------------
+  subgraph cluster_world {
+    label="com.timonipumba.world";
+    color="#4F81BD";
+    style="rounded";
+
+    CorridorBuilder [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>CorridorBuilder</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - engine : Engine<BR ALIGN="LEFT"/>
+          - corridorSprite : TextureRegion<BR ALIGN="LEFT"/>
+          - corridorEntities : List&lt;Entity&gt;
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + CorridorBuilder(engine : Engine)<BR ALIGN="LEFT"/>
+          + setCorridorSprite(sprite : TextureRegion) : void<BR ALIGN="LEFT"/>
+          + buildCorridor(startX : float, startY : float, endX : float, endY : float, width : int) : List&lt;Entity&gt;<BR ALIGN="LEFT"/>
+          + createCorridorTile(gridX : int, gridY : int) : Entity<BR ALIGN="LEFT"/>
+          + clearCorridors() : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    BSPDungeonGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>BSPDungeonGenerator</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - width : int<BR ALIGN="LEFT"/>
+          - height : int<BR ALIGN="LEFT"/>
+          - tiles : int[][]<BR ALIGN="LEFT"/>
+          - random : Random<BR ALIGN="LEFT"/>
+          - rooms : List&lt;Room&gt;
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + BSPDungeonGenerator(width : int, height : int, seed : long)<BR ALIGN="LEFT"/>
+          + generate() : int[][]<BR ALIGN="LEFT"/>
+          + getRooms() : List&lt;Room&gt;
+        </TD></TR>
+      </TABLE>
+    >];
+
+    BSPNode [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>BSPDungeonGenerator.BSPNode</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          ~ x, y, width, height : int<BR ALIGN="LEFT"/>
+          ~ left, right : BSPNode<BR ALIGN="LEFT"/>
+          ~ room : Room
+        </TD></TR>
+      </TABLE>
+    >];
+
+    Room [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>BSPDungeonGenerator.Room</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + x, y, width, height : int<BR ALIGN="LEFT"/>
+          + getCenterX() : int<BR ALIGN="LEFT"/>
+          + getCenterY() : int
+        </TD></TR>
+      </TABLE>
+    >];
+
+    RandomArenaTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>RandomArenaTmxGenerator</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - random : Random<BR ALIGN="LEFT"/>
+          - lastGeneratedArenas : List&lt;ArenaInfo&gt;
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + generateAndWrite(targetPath : String) : void<BR ALIGN="LEFT"/>
+          + generateAndWrite(targetPath : String, seed : long) : void<BR ALIGN="LEFT"/>
+          + getLastGeneratedArenas() : List&lt;ArenaInfo&gt;
+        </TD></TR>
+      </TABLE>
+    >];
+
+    ArenaInfo [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RandomArenaTmxGenerator.ArenaInfo</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + id : String<BR ALIGN="LEFT"/>
+          + index : int<BR ALIGN="LEFT"/>
+          + gridX, gridY : int<BR ALIGN="LEFT"/>
+          + originX, originY : int<BR ALIGN="LEFT"/>
+          + centerX() : int<BR ALIGN="LEFT"/>
+          + centerY() : int
+        </TD></TR>
+      </TABLE>
+    >];
+
+    GraphLightsOutTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>GraphLightsOutTmxGenerator</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - random : Random
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + generateAndWrite(targetPath : String, seed : long) : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    RegisterAllocationTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>RegisterAllocationTmxGenerator</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - random : Random
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + (generates TMX + stamps gate tiles) : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    AlgebraForgeTmxGenerator [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>AlgebraForgeTmxGenerator</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + generateAndWrite(outputPath : String, seed : long) : void<BR ALIGN="LEFT"/>
+          + generate(seed : long) : String
+        </TD></TR>
+      </TABLE>
+    >];
+
+    RoguelikeTilesetAssets [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;package-private&gt;&gt;</B><BR/><B>RoguelikeTilesetAssets</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + copyToMapDir(mapDir : FileHandle) : void {static}
+        </TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_components {
+    label="com.timonipumba.components";
+    color="#8064A2";
+    style="rounded";
+
+    PositionComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>PositionComponent</B></TD></TR>
+      </TABLE>
+    >];
+
+    RenderableComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR>
+      </TABLE>
+    >];
+
+    SpriteComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>SpriteComponent</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_core {
+    label="com.timonipumba";
+    color="#4BACC6";
+    style="rounded";
+
+    GameConstants [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;constants&gt;&gt;</B><BR/><B>GameConstants</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_level {
+    label="com.timonipumba.level";
+    color="#9BBB59";
+    style="rounded";
+
+    VigenereCipher [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>VigenereCipher</B></TD></TR>
+        <TR><TD ALIGN="LEFT">(used to build finale cipher text)</TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_systems {
+    label="com.timonipumba.systems";
+    color="#C0504D";
+    style="rounded";
+
+    GraphLightsOutSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GraphLightsOutSystem</B></TD></TR>
+      </TABLE>
+    >];
+
+    RegisterAllocationSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- External types --------------------
+  subgraph cluster_external {
+    label="External (LibGDX / Ashley / JDK)";
+    color="#999999";
+    style="rounded,dashed";
+
+    Engine [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Engine</B></TD></TR>
+      </TABLE>
+    >];
+
+    Entity [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Entity</B></TD></TR>
+      </TABLE>
+    >];
+
+    TextureRegion [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>TextureRegion</B></TD></TR>
+      </TABLE>
+    >];
+
+    Color [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Color</B></TD></TR>
+      </TABLE>
+    >];
+
+    FileHandle [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>FileHandle</B></TD></TR>
+      </TABLE>
+    >];
+
+    Gdx [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Gdx</B></TD></TR>
+      </TABLE>
+    >];
+
+    Random [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>Random</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- Relationships (UML-ish) --------------------
+  // Associations (solid): stored fields / long-lived references
+  CorridorBuilder -> Engine        [style="solid", arrowhead="vee", label="engine"];
+  CorridorBuilder -> TextureRegion [style="solid", arrowhead="vee", label="corridorSprite"];
+
+  // Composition (filled diamond): builder tracks created corridor entities and removes them
+  CorridorBuilder -> Entity [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="corridorEntities"];
+
+  // Dependencies (dashed): used in methods/constructors
+  CorridorBuilder -> GameConstants      [style="dashed", arrowhead="vee", label="tile size/constants"];
+  CorridorBuilder -> Color             [style="dashed", arrowhead="vee", label="CORRIDOR_COLOR"];
+  CorridorBuilder -> PositionComponent [style="dashed", arrowhead="vee", label="creates"];
+  CorridorBuilder -> RenderableComponent [style="dashed", arrowhead="vee", label="creates"];
+  CorridorBuilder -> SpriteComponent   [style="dashed", arrowhead="vee", label="creates (optional)"];
+
+  // BSP: internal tree + rooms are created and owned by generator
+  BSPDungeonGenerator -> BSPNode [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="builds BSP tree"];
+  BSPDungeonGenerator -> Room    [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="rooms"];
+  BSPDungeonGenerator -> Random  [style="solid", arrowhead="vee", label="random"];
+
+  // Random arena: owns lastGeneratedArenas snapshot
+  RandomArenaTmxGenerator -> ArenaInfo [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="lastGeneratedArenas"];
+  RandomArenaTmxGenerator -> Random    [style="solid", arrowhead="vee", label="random"];
+  RandomArenaTmxGenerator -> GameConstants [style="dashed", arrowhead="vee", label="tile ids"];
+  RandomArenaTmxGenerator -> FileHandle    [style="dashed", arrowhead="vee", label="writes"];
+  RandomArenaTmxGenerator -> Gdx           [style="dashed", arrowhead="vee", label="files.local"];
+  RandomArenaTmxGenerator -> RoguelikeTilesetAssets [style="dashed", arrowhead="vee", label="copies tileset"];
+
+  // Graph Lights-Out generator
+  GraphLightsOutTmxGenerator -> Random        [style="solid", arrowhead="vee", label="random"];
+  GraphLightsOutTmxGenerator -> GameConstants [style="dashed", arrowhead="vee", label="tile ids"];
+  GraphLightsOutTmxGenerator -> FileHandle    [style="dashed", arrowhead="vee", label="writes"];
+  GraphLightsOutTmxGenerator -> Gdx           [style="dashed", arrowhead="vee", label="files.local"];
+  GraphLightsOutTmxGenerator -> RoguelikeTilesetAssets [style="dashed", arrowhead="vee", label="copies tileset"];
+  GraphLightsOutTmxGenerator -> GraphLightsOutSystem   [style="dashed", arrowhead="vee", label="aligns puzzle semantics"];
+
+  // Register allocation generator
+  RegisterAllocationTmxGenerator -> Random        [style="solid", arrowhead="vee", label="random"];
+  RegisterAllocationTmxGenerator -> GameConstants [style="dashed", arrowhead="vee", label="tile ids"];
+  RegisterAllocationTmxGenerator -> FileHandle    [style="dashed", arrowhead="vee", label="writes"];
+  RegisterAllocationTmxGenerator -> Gdx           [style="dashed", arrowhead="vee", label="files.local"];
+  RegisterAllocationTmxGenerator -> RoguelikeTilesetAssets [style="dashed", arrowhead="vee", label="copies tileset"];
+  RegisterAllocationTmxGenerator -> RegisterAllocationSystem [style="dashed", arrowhead="vee", label="aligns puzzle semantics"];
+
+  // Algebra Forge generator
+  AlgebraForgeTmxGenerator -> GameConstants [style="dashed", arrowhead="vee", label="tile ids"];
+  AlgebraForgeTmxGenerator -> FileHandle    [style="dashed", arrowhead="vee", label="writes"];
+  AlgebraForgeTmxGenerator -> VigenereCipher [style="dashed", arrowhead="vee", label="encrypts finale"];
+}

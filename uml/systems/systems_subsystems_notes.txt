@@ -1,0 +1,44 @@
+com.timonipumba.systems — subsystem grouping notes
+
+Core gameplay loop
+- PlayerInputSystem (IteratingSystem): reads keyboard input, drives player velocity/attacks/interactions; dispatches interactions into puzzle/terminal systems.
+- MovementSystem (IteratingSystem): applies Velocity -> Position, resolves collisions against walls/doors/enemies/player.
+- EnemyAISystem (IteratingSystem): updates enemy intent/velocity/aggro for combat.
+- CombatSystem (EntitySystem): resolves melee attacks, damage, hit flash/shake, death/removal.
+- ProjectileSystem (EntitySystem): advances projectiles, collision/damage, hit flash/shake.
+- PickupSystem (EntitySystem): heals / pickups item entities on overlap.
+- TokenPickupSystem (EntitySystem): collects TokenComponent into PlayerInventoryComponent (glyph discovery/toasts).
+- GameStateSystem (EntitySystem): transitions GameStateManager to GAME_OVER / LEVEL_CLEAR based on entity presence.
+
+World progression & traversal
+- GateSystem (EntitySystem): arena gate open/close policy based on player arena + remaining enemies; can spawn corridors (CorridorBuilder) and clear gate tiles in TiledMap; exposes arena graph helpers (bounds/centers, traversal symbol capture).
+- GateSymbolLabelSystem (EntitySystem): draws in-world “0/1” labels over gates based on GateSystem arena geometry.
+- PortalSystem (EntitySystem): teleports player via portal collisions; gated by LevelManager / PortalConfig.
+- ExitSystem (EntitySystem): legacy exits; optionally disabled when PortalConfig enables portals.
+
+Puzzles & overlays (generated TMX mode)
+- PuzzleOverlaySystem (EntitySystem): generic puzzle-door overlay; on solve unlocks door and may open gates immediately (GateSystem) or advance level (LevelManager) for finale.
+- GraphLightsOutSystem (EntitySystem): lights-out riddle over LightsOutNodeComponent sockets; activates win-trigger sockets to unlock door groups.
+- RegisterAllocationSystem (EntitySystem): register-coloring constraint puzzle over RegisterNodeComponent sockets; activates win-trigger sockets.
+- AlgebraForgeSystem (EntitySystem): algebra “oracle/forge” terminal overlay; uses GateSystem to block interaction during combat.
+- GraphLightsOutIntroOverlaySystem (EntitySystem): M-key rules overlay.
+- RegisterAllocationIntroOverlaySystem (EntitySystem): M-key rules overlay.
+- AlgebraForgeIntroOverlaySystem (EntitySystem): M-key rules overlay.
+- DungeonThemeTraversalSystem (EntitySystem): global traversal lock overlay and checksum tracking across arena transitions; consumes traversal symbols from GateSystem.
+- TraversalRiddleSystem (EntitySystem): legacy per-arena traversal riddle overlay (commented as unused).
+
+Rendering & HUD
+- RenderingSystem (SortedIteratingSystem): draws entities (SpriteBatch/ShapeRenderer) using OrthographicCamera.
+- CameraSystem (IteratingSystem): follows player, zoom transitions, integrates shake.
+- AnimationSystem (IteratingSystem): advances animation state for entities.
+- HUDSystem (EntitySystem): draws HUD and optional minimap/graph overlays; wired to GateSystem + DungeonThemeTraversalSystem + RegisterAllocationSystem.
+
+Interactions / switches / doors
+- DoorSystem (EntitySystem): opens/closes DoorComponent based on SwitchComponent/SocketComponent; manages momentary socket timers.
+
+Key cross-system links to capture in UML
+- PlayerInputSystem -> PuzzleOverlaySystem (field injection) and -> GraphLightsOutSystem/RegisterAllocationSystem/AlgebraForgeSystem (Engine.getSystem() dispatch).
+- HUDSystem -> GateSystem / DungeonThemeTraversalSystem / RegisterAllocationSystem (setters; draws their state).
+- GateSymbolLabelSystem -> GateSystem (uses arena centers/bounds).
+- PuzzleOverlaySystem -> GateSystem (optional gate opening) and -> LevelManager (finale progression).
+- DungeonThemeTraversalSystem -> GateSystem (arena transitions, traversal symbols).

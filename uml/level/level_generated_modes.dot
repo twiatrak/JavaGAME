@@ -1,0 +1,26 @@
+digraph LevelGeneratedModes {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.level — generated map modes"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  GeneratedRunMode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>GeneratedRunMode</B></TD></TR>
+      <TR><TD ALIGN="LEFT">SINGLE<br align="left"/>CAMPAIGN</TD></TR>
+    </TABLE>
+  >];
+
+  GeneratedMapMode [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><br/><B>GeneratedMapMode</B></TD></TR>
+      <TR><TD ALIGN="LEFT">TRAVERSAL_RIDDLE<br align="left"/>REGISTER_ALLOCATION_RIDDLE<br align="left"/>LIGHTS_OUT_RIDDLE<br align="left"/>ALGEBRA_FORGE_RIDDLE</TD></TR>
+    </TABLE>
+  >];
+}

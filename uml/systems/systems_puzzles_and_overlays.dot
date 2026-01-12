@@ -1,0 +1,148 @@
+digraph SystemsPuzzlesAndOverlays {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — puzzle systems & overlays"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Base types
+  EntitySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>EntitySystem</B></TD></TR>
+    </TABLE>
+  >];
+  IteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>IteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Systems
+  PlayerInputSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">interaction dispatcher</TD></TR>
+    </TABLE>
+  >];
+
+  PuzzleOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">locked-door puzzle UI</TD></TR>
+    </TABLE>
+  >];
+
+  GraphLightsOutSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GraphLightsOutSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">socket-based lights-out puzzle</TD></TR>
+    </TABLE>
+  >];
+
+  RegisterAllocationSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">graph coloring via registers</TD></TR>
+    </TABLE>
+  >];
+
+  AlgebraForgeSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AlgebraForgeSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">oracle/forge terminal overlay</TD></TR>
+    </TABLE>
+  >];
+
+  GraphLightsOutIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GraphLightsOutIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key instructions overlay</TD></TR>
+    </TABLE>
+  >];
+
+  RegisterAllocationIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RegisterAllocationIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key instructions overlay</TD></TR>
+    </TABLE>
+  >];
+
+  AlgebraForgeIntroOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AlgebraForgeIntroOverlaySystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">M-key instructions overlay</TD></TR>
+    </TABLE>
+  >];
+
+  HUDSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HUDSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">renders puzzle/traversal progress info</TD></TR>
+    </TABLE>
+  >];
+
+  // External collaborators
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+    </TABLE>
+  >];
+
+  OverlayUi [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>OverlayUi</B></TD></TR>
+    </TABLE>
+  >];
+
+  GateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Inheritance
+  PlayerInputSystem -> IteratingSystem [arrowhead="empty", style="solid"];
+  PuzzleOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  GraphLightsOutSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  RegisterAllocationSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  AlgebraForgeSystem -> EntitySystem [arrowhead="empty", style="solid"];
+  GraphLightsOutIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> EntitySystem [arrowhead="empty", style="solid"];
+  HUDSystem -> EntitySystem [arrowhead="empty", style="solid"];
+
+  // Associations (fields)
+  PlayerInputSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PlayerInputSystem -> PuzzleOverlaySystem [label="puzzleOverlaySystem", arrowhead="vee", style="solid"];
+
+  GraphLightsOutSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  RegisterAllocationSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  AlgebraForgeSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  AlgebraForgeSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+
+  PuzzleOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem -> GateSystem [label="gateSystem (optional)", arrowhead="vee", style="solid"];
+
+  GraphLightsOutIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+
+  GraphLightsOutIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  RegisterAllocationIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  AlgebraForgeIntroOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+  AlgebraForgeSystem -> OverlayUi [label="ui", arrowhead="vee", style="solid"];
+
+  // Dependencies (interaction dispatch)
+  PlayerInputSystem -> GraphLightsOutSystem [label="Engine.getSystem()/tryInteract", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> RegisterAllocationSystem [label="Engine.getSystem()/tryInteract", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> AlgebraForgeSystem [label="Engine.getSystem()/beginInteraction", style="dashed", arrowhead="vee"];
+
+  HUDSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  HUDSystem -> RegisterAllocationSystem [label="registerAllocationSystem", arrowhead="vee", style="solid"];
+}

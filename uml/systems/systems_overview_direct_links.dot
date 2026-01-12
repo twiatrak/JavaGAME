@@ -1,0 +1,75 @@
+digraph SystemsOverviewDirectLinks {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — direct system-to-system links (tiny overview)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // Systems
+  PlayerInputSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+    </TABLE>
+  >];
+  HUDSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>HUDSystem</B></TD></TR>
+    </TABLE>
+  >];
+  GateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateSystem</B></TD></TR>
+    </TABLE>
+  >];
+  GateSymbolLabelSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GateSymbolLabelSystem</B></TD></TR>
+    </TABLE>
+  >];
+  DungeonThemeTraversalSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>DungeonThemeTraversalSystem</B></TD></TR>
+    </TABLE>
+  >];
+  GraphLightsOutSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GraphLightsOutSystem</B></TD></TR>
+    </TABLE>
+  >];
+  RegisterAllocationSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR>
+    </TABLE>
+  >];
+  AlgebraForgeSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>AlgebraForgeSystem</B></TD></TR>
+    </TABLE>
+  >];
+  PuzzleOverlaySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PuzzleOverlaySystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // Primary wiring / associations
+  GateSymbolLabelSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  DungeonThemeTraversalSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> GateSystem [label="gateSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> DungeonThemeTraversalSystem [label="dungeonThemeTraversalSystem", arrowhead="vee", style="solid"];
+  HUDSystem -> RegisterAllocationSystem [label="registerAllocationSystem", arrowhead="vee", style="solid"];
+  PuzzleOverlaySystem -> GateSystem [label="gateSystem (optional)", arrowhead="vee", style="solid"];
+
+  // Dispatch-style dependencies (Engine.getSystem at runtime)
+  PlayerInputSystem -> GraphLightsOutSystem [label="getSystem()/tryInteract", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> RegisterAllocationSystem [label="getSystem()/tryInteract", style="dashed", arrowhead="vee"];
+  PlayerInputSystem -> AlgebraForgeSystem [label="getSystem()/beginInteraction", style="dashed", arrowhead="vee"];
+
+  // Direct injection / wiring
+  PlayerInputSystem -> PuzzleOverlaySystem [label="puzzleOverlaySystem", arrowhead="vee", style="solid"];
+}

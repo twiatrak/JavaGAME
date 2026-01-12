@@ -1,0 +1,153 @@
+digraph RegisterAllocationClassDiagram {
+  rankdir=LR;
+  compound=true;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): Register Allocation cluster (focused class diagram)"
+  ];
+
+  node [fontname="Segoe UI", fontsize=10, shape=plaintext];
+  edge [fontname="Segoe UI", fontsize=9, color="#444444", arrowsize=0.8];
+
+  // -------------------- Packages (clusters) --------------------
+  subgraph cluster_systems {
+    label="com.timonipumba.systems";
+    color="#4F81BD";
+    style="rounded";
+
+    RegisterAllocationSystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>RegisterAllocationSystem</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - gameStateManager : GameStateManager<BR ALIGN="LEFT"/>
+          - nodeSockets : ImmutableArray&lt;Entity&gt;<BR ALIGN="LEFT"/>
+          - byNodeId : ObjectMap&lt;String, Entity&gt;<BR ALIGN="LEFT"/>
+          - solved : boolean<BR ALIGN="LEFT"/>
+          - winTriggered : boolean
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + RegisterAllocationSystem(gameStateManager : GameStateManager)<BR ALIGN="LEFT"/>
+          + tryInteract(player : Entity, socketEntity : Entity) : boolean<BR ALIGN="LEFT"/>
+          + getAssignedCount() : int<BR ALIGN="LEFT"/>
+          + getNodeCount() : int<BR ALIGN="LEFT"/>
+          + isSolvedPublic() : boolean<BR ALIGN="LEFT"/>
+          + update(deltaTime : float) : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    RegisterAllocationIntroOverlaySystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>RegisterAllocationIntroOverlaySystem</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          - gameStateManager : GameStateManager<BR ALIGN="LEFT"/>
+          - ui : OverlayUi<BR ALIGN="LEFT"/>
+          - introOpen : boolean<BR ALIGN="LEFT"/>
+          - stateBeforeIntro : GameState
+        </TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + RegisterAllocationIntroOverlaySystem(gameStateManager : GameStateManager)<BR ALIGN="LEFT"/>
+          + update(deltaTime : float) : void<BR ALIGN="LEFT"/>
+          + dispose() : void
+        </TD></TR>
+      </TABLE>
+    >];
+
+    EntitySystem [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;external&gt;&gt;</B><BR/><B>EntitySystem</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_components {
+    label="com.timonipumba.components";
+    color="#8064A2";
+    style="rounded";
+
+    RegisterNodeComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>RegisterNodeComponent</B></TD></TR>
+        <TR><TD ALIGN="LEFT">
+          + nodeId : String<BR ALIGN="LEFT"/>
+          + neighborsCsv : String<BR ALIGN="LEFT"/>
+          + assignedRegisterTokenId : String<BR ALIGN="LEFT"/>
+          + winTrigger : boolean<BR ALIGN="LEFT"/>
+          + unlockDoorGroup : String
+        </TD></TR>
+      </TABLE>
+    >];
+
+    SocketComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>SocketComponent</B></TD></TR>
+      </TABLE>
+    >];
+
+    RenderableComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>RenderableComponent</B></TD></TR>
+      </TABLE>
+    >];
+
+    PlayerComponent [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>PlayerComponent</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_ui {
+    label="com.timonipumba.ui";
+    color="#9BBB59";
+    style="rounded";
+
+    OverlayUi [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+        <TR><TD ALIGN="CENTER"><B>OverlayUi</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  subgraph cluster_core {
+    label="com.timonipumba";
+    color="#4BACC6";
+    style="rounded";
+
+    GameStateManager [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+      </TABLE>
+    >];
+
+    GameState [label=<
+      <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+        <TR><TD ALIGN="CENTER"><B>&lt;&lt;enum&gt;&gt;</B><BR/><B>GameState</B></TD></TR>
+      </TABLE>
+    >];
+  }
+
+  // -------------------- Relationships (UML-ish) --------------------
+  // Inheritance
+  RegisterAllocationSystem -> EntitySystem [style="solid", arrowhead="empty", label="extends"];
+  RegisterAllocationIntroOverlaySystem -> EntitySystem [style="solid", arrowhead="empty", label="extends"];
+
+  // Composition: intro overlay owns its UI (new + dispose)
+  RegisterAllocationIntroOverlaySystem -> OverlayUi [dir="both", arrowtail="diamond", arrowhead="none", style="solid", label="ui"];
+
+  // Association: field references
+  RegisterAllocationSystem -> GameStateManager [style="solid", arrowhead="vee", label="gameStateManager"];
+  RegisterAllocationIntroOverlaySystem -> GameStateManager [style="solid", arrowhead="vee", label="gameStateManager"];
+
+  // Dependency: enum used for state transitions
+  RegisterAllocationIntroOverlaySystem -> GameState [style="dashed", arrowhead="vee", label="uses"];
+
+  // ECS interaction (reads/writes components)
+  RegisterAllocationSystem -> RegisterNodeComponent [style="dashed", arrowhead="vee", label="reads/writes"];
+  RegisterAllocationSystem -> SocketComponent       [style="dashed", arrowhead="vee", label="activates"];
+  RegisterAllocationSystem -> RenderableComponent   [style="dashed", arrowhead="vee", label="mutates color"];
+
+  RegisterAllocationIntroOverlaySystem -> PlayerComponent [style="dashed", arrowhead="vee", label="queries players"];
+}

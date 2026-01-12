@@ -1,0 +1,120 @@
+digraph SystemsGameplayLoop {
+  rankdir=LR;
+  graph [
+    fontname="Segoe UI",
+    fontsize=11,
+    labelloc=t,
+    label="UML (Graphviz): com.timonipumba.systems — core gameplay loop"
+  ];
+
+  node [
+    fontname="Segoe UI",
+    fontsize=10,
+    shape=plaintext
+  ];
+
+  edge [
+    fontname="Segoe UI",
+    fontsize=9,
+    color="#444444",
+    arrowsize=0.8
+  ];
+
+  // --- External base types (Ashley) ---
+  EntitySystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>EntitySystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  IteratingSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>IteratingSystem</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Key systems ---
+  PlayerInputSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PlayerInputSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">reads input; triggers interactions</TD></TR>
+    </TABLE>
+  >];
+
+  MovementSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>MovementSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">applies velocity; resolves collisions</TD></TR>
+    </TABLE>
+  >];
+
+  EnemyAISystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>EnemyAISystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">updates enemy intent/aggro</TD></TR>
+    </TABLE>
+  >];
+
+  CombatSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>CombatSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">melee resolution; damage/death</TD></TR>
+    </TABLE>
+  >];
+
+  ProjectileSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>ProjectileSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">projectile movement + damage</TD></TR>
+    </TABLE>
+  >];
+
+  PickupSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>PickupSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">item overlap pickups</TD></TR>
+    </TABLE>
+  >];
+
+  TokenPickupSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>TokenPickupSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">token -> inventory</TD></TR>
+    </TABLE>
+  >];
+
+  GameStateSystem [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFF6CC">
+      <TR><TD ALIGN="CENTER"><B>GameStateSystem</B></TD></TR>
+      <TR><TD ALIGN="LEFT">GAME_OVER / LEVEL_CLEAR checks</TD></TR>
+    </TABLE>
+  >];
+
+  // External manager
+  GameStateManager [label=<
+    <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6" BGCOLOR="#FFFFFF">
+      <TR><TD ALIGN="CENTER"><B>GameStateManager</B></TD></TR>
+    </TABLE>
+  >];
+
+  // --- Inheritance ---
+  PlayerInputSystem -> IteratingSystem [arrowhead="empty", style="solid"];
+  MovementSystem    -> IteratingSystem [arrowhead="empty", style="solid"];
+  EnemyAISystem      -> IteratingSystem [arrowhead="empty", style="solid"];
+
+  CombatSystem       -> EntitySystem [arrowhead="empty", style="solid"];
+  ProjectileSystem   -> EntitySystem [arrowhead="empty", style="solid"];
+  PickupSystem       -> EntitySystem [arrowhead="empty", style="solid"];
+  TokenPickupSystem  -> EntitySystem [arrowhead="empty", style="solid"];
+  GameStateSystem    -> EntitySystem [arrowhead="empty", style="solid"];
+
+  // --- Associations (held fields) ---
+  PlayerInputSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  CombatSystem      -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  ProjectileSystem  -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  PickupSystem      -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  TokenPickupSystem -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+  GameStateSystem   -> GameStateManager [label="gameStateManager", arrowhead="vee", style="solid"];
+
+  // --- Notes: systems mostly communicate via components/entities, not direct calls. ---
+}
